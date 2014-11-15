@@ -43,6 +43,8 @@ class LeavePartyHandler(tornado.web.RequestHandler):
 class LoginHandler(tornado.web.RequestHandler):
     def post(self):
         data = json.loads(self.request.body)
+        email = data['email']
+        return util.login(email)
 
 class AddSongHandler(tornado.web.RequestHandler):
     def post(self, user_id, spotify_id):
@@ -84,7 +86,10 @@ class UserInfoHandler(tornado.web.RequestHandler):
 
 class SetAliasHandler(tornado.web.RequestHandler):
     def post(self, user_id):
+        u_id = int(user_id)
         data = json.loads(self.request.body)
+        alias = data['alias']
+        return util.set_alias(u_id, alias)
 
 
 
