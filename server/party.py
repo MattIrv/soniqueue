@@ -4,24 +4,27 @@ import user
 
 class Party(object):
 	party_map = {}
-	cur_pID = 0
+	cur_party_id = 0
 
 	def __init__(self, host, name, location):
 		self.name = name
 		self.host = host
 		self.location = location
-		self.userDict = {}
+		self.users = set()
 		self.queue = queues.PartyQueue()
-		self.pID = Party.cur_pID
-		Party.party_map[self.pID] = self
-		Party.cur_pID += 1
+		self.party_id = Party.cur_party_id
+		Party.party_map[self.party_id] = self
+		Party.cur_party_id += 1
 	def __str__(self):
-		return "Party(%s, %s, %s) : %s" % (str(self.name), str(self.host), str(self.location), str(self.pID))
+		return "Party(%s, %s, %s) : %s" % (str(self.name), str(self.host), str(self.location), str(self.party_id))
 	def __repr__(self):
-		return "Party(%s, %s, %s) : %s" % (str(self.name), str(self.host), str(self.location), str(self.pID))
+		return "Party(%s, %s, %s) : %s" % (str(self.name), str(self.host), str(self.location), str(self.party_id))
 	def add_user(self, user):
-		self.userDict[user.uID] = user
+		self.users.add(user)
 		self.queue.add_user(user)
+	def remove_user(self, user):
+		self.users.remove(user)
+		self.queue.remove_user(user)
 
 
 print "Tests:"
@@ -64,6 +67,8 @@ print p0.queue.list()
 print p0.queue.pop()
 print p0.queue.list()
 p0.add_user(u0)
+print p0.queue.list()
+p0.remove_user(u1)
 print p0.queue.list()
 #print p0
 #print u0 
