@@ -16,6 +16,23 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+
+        <activity
+            android:name=".MainMenu"
+            android:label="@string/title_activity_main_menu" >
+        </activity>
+        <activity
+            android:name=".PartyList"
+            android:label="@string/title_activity_party_list" >
+        </activity>
+        <activity
+            android:name=".PartyScreen"
+            android:label="@string/title_activity_party_screen" >
+        </activity>
     </application>
 
 </manifest>

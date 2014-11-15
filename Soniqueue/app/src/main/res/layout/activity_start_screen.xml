@@ -9,8 +9,20 @@
     tools:context=".StartScreen">
 
     <TextView
-        android:text="@string/hello_world"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Soniqueue"
+        android:id="@+id/textView"
+        android:layout_above="@+id/but_login"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="45dp" />
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Login with Google"
+        android:id="@+id/but_login"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true" />
 </RelativeLayout>
