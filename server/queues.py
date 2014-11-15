@@ -1,13 +1,15 @@
 import song
+import user
+import copy
 
 class UserQueue(object):
 	def __init__(self):
 		self.queue = []
-	def addSong(self, URI):
-		self.queue.append(Song(URI,cur_sID))
-	def removeSong(self, sID):
-		self.queue.remove(song_map[sID]) #does not remove the sID from the song_map dictionary
-	def clearQueue(self):
+	def add_song(self, s):
+		self.queue.append(s)
+	def remove_song(self, s):
+		self.queue.remove(s) #does not remove the sID from the song_map dictionary
+	def clear_queue(self):
 		self.queue = []
 	def top(self): #only shows what top song is, does not remove it
 		if self.queue:
@@ -16,7 +18,40 @@ class UserQueue(object):
 			return None
 	def pop(self): #only removes top song, does not show what top song is
 		if self.queue:
-			self.removeSong(self.top().sID)
+			return self.queue.pop(0)
+		else:
+			return None
+	def list(self): #returns list of songs
+		return self.queue
+	def __repr__(self):
+		return "UserQueue(%s)" %  (str(self.queue))
+	def __str__(self):
+		return str(self.queue)
+
+
 class PartyQueue(object):
 	def __init__(self):
-		pass
+		self.queue = []
+	def add_user(self, user):
+		if user.queue.list() and user not in self.queue:
+			self.queue.append(user)
+	def top(self): #returns the top user in the user queue, does not pop them from queue
+		if self.queue:
+			return self.queue[0]
+		else:
+			return None
+	def pop(self): #removes the top user from the queue and returns it
+		if self.queue: #if there is a user on the queue
+			return self.queue.pop(0)
+	def list(self): #returns a list of songs
+		temp_list = [copy.deepcopy(user.queue.list()) for user in self.queue]
+		ret_list = []
+		while temp_list:
+			temp_list = [queue for queue in temp_list if queue] #removes all empty list elements from temp_list
+			for queue in temp_list:
+				ret_list.append(queue.pop(0))		
+		return ret_list
+	def __repr__(self):
+		return "PartyQueue(%s)" %  (str(self.queue))
+	def __str__(self):
+		return str(self.queue)
