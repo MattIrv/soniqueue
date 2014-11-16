@@ -9,6 +9,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 
@@ -48,6 +49,13 @@ public class PartyScreen extends Activity {
             leaveButton.setVisibility(View.VISIBLE);
         }
 
+        Thread thread = new Thread(new Runnable() {
+            public void run() {
+                MakeRequest.nowPlayingFromPartyScreen(context);
+            }
+        });
+        thread.start();
+
         //Bind the buttons to actions
         nowPlayingButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -73,6 +81,24 @@ public class PartyScreen extends Activity {
                 endParty();
             }
         });
+    }
+
+    public void setNowPlaying(Song nowPlaying){
+        TextView songNameText = (TextView) findViewById(R.id.textview_song_name);
+        songNameText.setText(nowPlaying.songName);
+        TextView artistText = (TextView) findViewById(R.id.textview_artist_name);
+        artistText.setText(nowPlaying.artist);
+        TextView albumText = (TextView) findViewById(R.id.textview_album_name);
+        albumText.setText(nowPlaying.album);
+        TextView queuedByText = (TextView) findViewById(R.id.textview_queued_by);
+        queuedByText.setText(nowPlaying.queuedBy);
+        ImageView albumArtView = (ImageView) findViewById(R.id.imageview_album_art);
+        if (nowPlaying.image != null) {
+            albumArtView.setImageBitmap(nowPlaying.image);
+        }
+
+
+
     }
 
 
