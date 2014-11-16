@@ -527,17 +527,33 @@ public class MakeRequest {
                 result.append(line);
             }
 
+            Log.d("MakeRequest: nowPlayingFromPartyScreen", result.toString());
+
             JSONObject o = new JSONObject(result.toString());
             //{song_id: Int, spotify_id: String, user_id: Int, user_alias: String}
             int songID = o.getInt("song_id");
             String spotifyID = o.getString("spotify_id");
             int userID = o.getInt("user_id");
             String userAlias = o.getString("user_alias");
+            String imgURL = o.getString("album_cover_url");
+            String songName = o.getString("song_name");
+            String artistName = o.getString("artist_name");
+            String albumName = o.getString("album_name");
             Song song = new Song();
             song.song_id = songID + "";
             song.queuedBy = userAlias;
             song.spotify_id = spotifyID;
-            context.setNowPlaying(song);
+            song.songName = songName;
+            song.album = albumName;
+            song.artist = artistName;
+            song.setImage(imgURL);
+            final Song finalSong = song;
+            context.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    context.setNowPlaying(finalSong);
+                }
+            });
 
         }catch(Exception e){
             e.printStackTrace();
