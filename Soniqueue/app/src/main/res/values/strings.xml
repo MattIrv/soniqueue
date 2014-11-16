@@ -7,5 +7,8 @@
     <string name="title_activity_main_menu">MainMenu</string>
     <string name="title_activity_party_list">PartyList</string>
     <string name="title_activity_party_screen">PartyScreen</string>
+    <string name="title_activity_now_playing">NowPlaying</string>
+    <string name="title_activity_my_queue">MyQueue</string>
+    <string name="title_activity_song_search">SongSearch</string>
 
 </resources>

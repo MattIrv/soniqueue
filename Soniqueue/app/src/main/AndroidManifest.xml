@@ -33,6 +33,18 @@
             android:name=".PartyScreen"
             android:label="@string/title_activity_party_screen" >
         </activity>
+        <activity
+            android:name=".NowPlaying"
+            android:label="@string/title_activity_now_playing" >
+        </activity>
+        <activity
+            android:name=".MyQueue"
+            android:label="@string/title_activity_my_queue" >
+        </activity>
+        <activity
+            android:name=".SongSearch"
+            android:label="@string/title_activity_song_search" >
+        </activity>
     </application>
 
 </manifest>

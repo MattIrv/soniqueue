@@ -95,10 +95,24 @@ public class PartyScreen extends Activity {
 
     public void showNowPlaying() {
         //TODO: Make API call and transition to now playing view
+
+        //Transition to now playing here
+        Intent intent = new Intent(getBaseContext(), NowPlaying.class);
+        intent.putExtra("PARTY_NAME", partyName);
+        intent.putExtra("PARTY_ID", partyId);
+        intent.putExtra("EMAIL", email);
+        startActivity(intent);
     }
 
     public void showMyQueue() {
         //TODO: Make API call and show own queue
+
+
+        Intent intent = new Intent(getBaseContext(), MyQueue.class);
+        intent.putExtra("PARTY_NAME", partyName);
+        intent.putExtra("PARTY_ID", partyId);
+        intent.putExtra("EMAIL", email);
+        startActivity(intent);
     }
 
     public void leaveParty() {
