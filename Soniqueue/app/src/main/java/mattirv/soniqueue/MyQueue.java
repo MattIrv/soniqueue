@@ -15,13 +15,13 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class MyQueue extends Activity {
 
     String partyName, email;
     int partyId;
-
     final MyQueue context = this;
 
     @Override
@@ -56,21 +56,15 @@ public class MyQueue extends Activity {
         });
         thread.start();
 
-        //TODO: MJK6ZT: how can we put something more complicated than strings into the list view?
+        //TODO: MJK : needs to actually use a uID
 
-        ListView listview = (ListView) findViewById(R.id.listView);
-        ArrayList<Song> songList = new ArrayList<Song>();
-        Song song1 = new Song("", "Everytime We Touch", "Cascada", "Some Cascada Album", "mji7wb");
-        Song song2 = new Song("", "Crash Into Me", "Dave Matthews Band", "Crash", "mji7wb");
-        Song song3 = new Song("", "Lips of an Angel", "Hinder", "idk", "mji7wb");
-        songList.add(song1);
-        songList.add(song2);
-        songList.add(song3);
-
-
-        SongViewButtonAdapter adapter = new SongViewButtonAdapter(this, songList);
-        listview.setAdapter(adapter);
-        adapter.notifyDataSetChanged();
+        /*
+        Thread thread = new Thread(new Runnable() {
+            public void run() {
+                MakeRequest.getUserQueue(context, I need a uid);
+            }
+        });
+        thread.start();*/
 
     }
 
@@ -123,8 +117,17 @@ public class MyQueue extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
+
+    public void updateSongs(List<Song> rgsong) {
+        ListView listview = (ListView) findViewById(R.id.listView);
+        SongViewButtonAdapter adapter = new SongViewButtonAdapter(this, rgsong);
+        listview.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
+    }
+
     public void updateUserPosition(int user_pos) {
         TextView queuePositionText = (TextView) findViewById(R.id.textview_party_info);
         queuePositionText.setText("You are at spot " + (user_pos + 1) + " in " + partyName);
+
     }
 }

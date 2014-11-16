@@ -262,6 +262,60 @@ public class MakeRequest {
         }
     }
 
+    public static void getUserQueue(final MyQueue context, int uId) {
+        HttpClient client = new DefaultHttpClient();
+        String url = "http://soniqueue.com/user/"+uId+"/list";
+        HttpPost request = new HttpPost(url);
+        HttpResponse response;
+        try {
+            response = client.execute(request);
+            StatusLine status = response.getStatusLine();
+            if (status.getStatusCode() >= 300) {
+                throw new IOException("Request failed with status " + status.getStatusCode());
+            }
+            BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
+
+            StringBuffer result = new StringBuffer();
+            String line = "";
+            while ((line = rd.readLine()) != null) {
+                result.append(line);
+            }
+
+            JSONObject o = new JSONObject(result.toString());
+            JSONArray partyList = o.getJSONArray("user_queue");
+            int len = partyList.length();
+            ArrayList<Song> rgsong = new ArrayList<Song>();
+            for (int i=0; i<len; i++) {
+                JSONObject p = partyList.getJSONObject(i);
+
+                String imageURL = p.getString("album_cover_url");
+                String songName = p.getString("song_name");
+                String artist = p.getString("artist_name");
+                String album = p.getString("album_name");
+                String queuedBy = p.getString("user");
+                String song_id = p.getString("song_id");
+                String spotify_id = p.getString("spotify_id");
+
+                rgsong.add(new Song(imageURL,songName,artist,album,queuedBy,song_id,spotify_id));
+            }
+            final ArrayList<Song> rgsongFinal = rgsong;
+            context.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    context.updateSongs(rgsongFinal);
+                }
+            });
+        }
+        catch (IOException e) {
+            System.out.println("ERROR: " + e);
+            return;
+        }
+        catch (JSONException e) {
+            System.out.println("ERROR: " + e);
+            return;
+        }
+    }
+
 
 
     public static void playNextSong(final MusicPlayer context, int partyID) {
@@ -273,7 +327,7 @@ public class MakeRequest {
             response = client.execute(request);
             StatusLine status = response.getStatusLine();
             if (status.getStatusCode() >= 300) {
-                throw new IOException("Request failed with status " + status.getStatusCode());
+                throw new IOException("Request to url " + url + "failed with status " + status.getStatusCode());
             }
             BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
 
