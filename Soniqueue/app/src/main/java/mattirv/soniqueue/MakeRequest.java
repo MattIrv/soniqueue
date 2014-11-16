@@ -238,7 +238,7 @@ public class MakeRequest {
             response = client.execute(request);
             StatusLine status = response.getStatusLine();
             if (status.getStatusCode() >= 300) {
-                throw new IOException("Request failed with status " + status.getStatusCode());
+                throw new IOException("Request to url " + url + "failed with status " + status.getStatusCode());
             }
             BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
 
