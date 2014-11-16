@@ -158,7 +158,7 @@ public class MyQueue extends Activity {
         if(user_pos != -1)
             queuePositionText.setText("You are at spot " + (user_pos + 1) + " in " + partyName);
         else
-            queuePositionText.setText("You aren't in the queue yet in " + partyName);
+            queuePositionText.setText("You're in " + partyName);
 
     }
 }
