@@ -34,7 +34,6 @@ public class MainMenu extends Activity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d("onCreate", "I just got created");
         setContentView(R.layout.activity_main_menu);
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
@@ -141,7 +140,6 @@ public class MainMenu extends Activity implements
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        Log.d("onNewIntent", "I MADE IT ACROSS THE OREGON TRAIL!!!!!!!");
         Uri uri = intent.getData();
         if (uri != null) {
             AuthenticationResponse response = SpotifyAuthentication.parseOauthResponse(uri);
@@ -149,6 +147,8 @@ public class MainMenu extends Activity implements
             mPlayer = spotify.getPlayer(this, "Soniqueue", this, new Player.InitializationObserver() {
                 @Override
                 public void onInitialized() {
+                    Intent intent1 = new Intent(getBaseContext(), MusicPlayer.class);
+                    startService(intent1);
                     mPlayer.addConnectionStateCallback(MainMenu.this);
                     mPlayer.addPlayerNotificationCallback(MainMenu.this);
                     player = mPlayer;
@@ -205,7 +205,7 @@ public class MainMenu extends Activity implements
 
     @Override
     public void onDestroy() {
-        Log.d("MainMenu", "I got destroyed.");
+        Spotify.destroyPlayer(this);
         super.onDestroy();
     }
 }

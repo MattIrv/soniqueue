@@ -13,8 +13,9 @@ public class Song {
     public String artist;
     public String album;
     public String queuedBy;
-    public String id;
+    public String song_id;
     public Bitmap image;
+    public String spotify_id;
 
     public Song(String imageURL, String songName, String artist, String album, String queuedBy) {
         this.imageURL = imageURL;
@@ -24,13 +25,23 @@ public class Song {
         this.queuedBy = queuedBy;
     }
 
-    public Song(String imageURL, String songName, String artist, String album, String queuedBy, String id) {
+    public Song(String imageURL, String songName, String artist, String album, String queuedBy, String song_id) {
         this.imageURL = imageURL;
         this.songName = songName;
         this.artist = artist;
         this.album = album;
         this.queuedBy = queuedBy;
-        this.id = id;
+        this.song_id = song_id;
+    }
+
+    public Song(String imageURL, String songName, String artist, String album, String queuedBy, String song_id, String spotify_id) {
+        this.imageURL = imageURL;
+        this.songName = songName;
+        this.artist = artist;
+        this.album = album;
+        this.queuedBy = queuedBy;
+        this.song_id = song_id;
+        this.spotify_id = spotify_id;
     }
 
     public Song() {}
