@@ -470,12 +470,20 @@ public class MakeRequest {
         }
     }
 
-    public static void addSong(int user_id, String spotify_id){
+    public static void addSong(int user_id, String spotify_id, String songName, String artistName, String albumName, String albumCoverURL){
         HttpClient client = new DefaultHttpClient();
         String url = "http://soniqueue.com/user/" + user_id + "/add/" + spotify_id;
         HttpPost request = new HttpPost(url);
+        JSONObject json = new JSONObject();
         HttpResponse response;
         try {
+            json.put("song_name", songName);
+            json.put("artist_name", artistName);
+            json.put("album_name", albumName);
+            json.put("album_cover_url", albumCoverURL);
+            StringEntity se = new StringEntity(json.toString());
+            se.setContentType("application/json");
+            request.setEntity(se);
             response = client.execute(request);
         }catch(Exception e){
             e.printStackTrace();
