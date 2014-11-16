@@ -1,6 +1,7 @@
 package mattirv.soniqueue;
 
 import android.graphics.Bitmap;
+import android.util.Log;
 
 import java.io.IOException;
 
@@ -23,7 +24,7 @@ public class Song {
         try{
             setImage(imageURL);
         }catch (Exception e){
-
+            Log.e("Song", e.toString());
         }
 
         this.songName = songName;
@@ -38,7 +39,7 @@ public class Song {
         try{
             setImage(imageURL);
         }catch (Exception e){
-
+            Log.e("Song", e.toString());
         }
 
         this.songName = songName;
@@ -54,7 +55,7 @@ public class Song {
         try{
             setImage(imageURL);
         }catch (Exception e){
-
+            Log.e("Song", e.toString());
         }
 
         this.songName = songName;

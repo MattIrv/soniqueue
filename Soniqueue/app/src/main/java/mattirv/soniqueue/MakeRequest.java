@@ -325,7 +325,7 @@ public class MakeRequest {
                 String songName = p.getString("song_name");
                 String artist = p.getString("artist_name");
                 String album = p.getString("album_name");
-                String queuedBy = p.getString("user");
+                String queuedBy = p.getString("user_alias");
                 String song_id = p.getString("song_id");
                 String spotify_id = p.getString("spotify_id");
 
@@ -379,7 +379,7 @@ public class MakeRequest {
                 String songName = p.getString("song_name");
                 String artist = p.getString("artist_name");
                 String album = p.getString("album_name");
-                String queuedBy = p.getString("user");
+                String queuedBy = p.getString("user_alias");
                 String song_id = p.getString("song_id");
                 String spotify_id = p.getString("spotify_id");
 

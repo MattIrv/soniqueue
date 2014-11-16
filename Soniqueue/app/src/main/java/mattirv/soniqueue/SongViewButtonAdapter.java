@@ -36,6 +36,8 @@ public class SongViewButtonAdapter extends ArrayAdapter<Song> {
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View rowView = inflater.inflate(R.layout.song_list_view_with_button, parent, false);
         ImageView albumArtView = (ImageView) rowView.findViewById(R.id.imageview_album_art_b);
+        if (song.image != null)
+            albumArtView.setImageBitmap(song.image);
         TextView songNameView = (TextView) rowView.findViewById(R.id.textview_song_name_b);
         songNameView.setText(song.songName);
         TextView artistNameView = (TextView) rowView.findViewById(R.id.textview_artist_name_b);
@@ -85,6 +87,7 @@ public class SongViewButtonAdapter extends ArrayAdapter<Song> {
                             MakeRequest.moveSong(MyUser.userId, song.song_id, -1);
                         }
                     });
+                    thread.start();
                     objects.remove(song);
                     objects.add(position-1, song);
                     notifyDataSetChanged();
@@ -102,6 +105,7 @@ public class SongViewButtonAdapter extends ArrayAdapter<Song> {
                             MakeRequest.moveSong(MyUser.userId, song.song_id, 1);
                         }
                     });
+                    thread.start();
                     objects.remove(song);
                     objects.add(position+1, song);
                     notifyDataSetChanged();
