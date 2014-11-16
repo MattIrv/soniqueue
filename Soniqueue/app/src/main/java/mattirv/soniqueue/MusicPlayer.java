@@ -28,7 +28,6 @@ public class MusicPlayer extends Service {
         player = MainMenu.player;
         nowPlaying = null;
         if (player == null) return 1;
-        startup();
         return 0;
     }
 
@@ -36,32 +35,32 @@ public class MusicPlayer extends Service {
         return instance;
     }
 
-    public void startup() {
+    public void playNextSong() {
         final MusicPlayer context = this;
-        while(nowPlaying == null) {
-            Thread thread = new Thread(new Runnable() {
-                public void run() {
-                    while(MainMenu.partyID == -1) {
-                        try { wait(5000); } catch (InterruptedException e) { }
-                    }
+        Thread thread = new Thread(new Runnable() {
+            public void run() {
+                while (nowPlaying == null) {
                     MakeRequest.playNextSong(context, MainMenu.partyID);
                     try {
-                        wait(5000);
+                        wait(10000);
                     }
                     catch (InterruptedException e) {
 
                     }
+                    catch (IllegalMonitorStateException e) {
+                        break;
+                    }
                 }
-            });
-            thread.start();
-        }
+            }
+        });
+        thread.start();
     }
 
     public void play(Song nowPlaying) {
         if (player == null) return;
         this.nowPlaying = nowPlaying;
         Log.d("MusicPlayer", "Trying to play a song...");
-        player.play("spotify:track:40LQiUUUKXVGyNs09lHVjW");
-        //player.play("spotify:track:" + nowPlaying.spotify_id);
+        //player.play("spotify:track:40LQiUUUKXVGyNs09lHVjW");
+        player.play("spotify:track:" + nowPlaying.spotify_id);
     }
 }

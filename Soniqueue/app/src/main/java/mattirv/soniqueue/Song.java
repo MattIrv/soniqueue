@@ -19,6 +19,13 @@ public class Song {
 
     public Song(String imageURL, String songName, String artist, String album, String queuedBy) {
         this.imageURL = imageURL;
+
+        try{
+            setImage(imageURL);
+        }catch (Exception e){
+
+        }
+
         this.songName = songName;
         this.artist = artist;
         this.album = album;
@@ -27,6 +34,13 @@ public class Song {
 
     public Song(String imageURL, String songName, String artist, String album, String queuedBy, String song_id) {
         this.imageURL = imageURL;
+
+        try{
+            setImage(imageURL);
+        }catch (Exception e){
+
+        }
+
         this.songName = songName;
         this.artist = artist;
         this.album = album;
@@ -36,6 +50,13 @@ public class Song {
 
     public Song(String imageURL, String songName, String artist, String album, String queuedBy, String song_id, String spotify_id) {
         this.imageURL = imageURL;
+
+        try{
+            setImage(imageURL);
+        }catch (Exception e){
+
+        }
+
         this.songName = songName;
         this.artist = artist;
         this.album = album;

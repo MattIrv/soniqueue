@@ -30,7 +30,7 @@ public class MainMenu extends Activity implements
     static String email = null;
     static String displayname = null;
     static Player player = null;
-    static int partyID = -1;
+    static Integer partyID = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,13 +115,14 @@ public class MainMenu extends Activity implements
             public void onClick(DialogInterface dialog, int whichButton) {
                 String partyName = input.getText().toString();
                 //TODO: Send API call and advance to next screen
-                int id = 0; // We will get this from the api call
+                partyID = 0; // We will get this from the api call
                 Intent intent = new Intent(getBaseContext(), PartyScreen.class);
                 intent.putExtra("EMAIL", email);
-                intent.putExtra("PARTY_ID", id);
+                intent.putExtra("PARTY_ID", partyID);
                 intent.putExtra("PARTY_NAME", partyName);
                 intent.putExtra("IS_LEADER", true);
                 startActivity(intent);
+                MusicPlayer.getInstance().playNextSong();
             }
         });
 
@@ -199,7 +200,14 @@ public class MainMenu extends Activity implements
 
     @Override
     public void onPlaybackEvent(EventType eventType, PlayerState playerState) {
-
+        Log.d("MainMenu", "Playback event " + eventType.toString());
+        if (eventType == EventType.TRACK_END) {
+            Log.d("MainMenu", "Trying to play next song");
+            MusicPlayer.nowPlaying = null;
+            MusicPlayer.getInstance().playNextSong();
+        }
+        else
+            Log.d("MainMenu", "Not trying to play next song");
     }
 
     @Override
