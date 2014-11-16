@@ -84,7 +84,7 @@ public class SongSearch extends Activity {
                 final String spotify_id = songs.get(index).spotify_id;
                 Thread thread = new Thread(new Runnable() {
                     public void run() {
-                        MakeRequest.addSong(context, 0, spotify_id );//TODO: user_id goes here
+                        MakeRequest.addSong(context, MyUser.userId, spotify_id );//TODO: user_id goes here - Signed off by CJE4SW
                     }
                 });
                 thread.start();
