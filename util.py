@@ -55,8 +55,13 @@ def leave(p_id, u_id):
     except Exception as e:
         return json.dumps({'err': str(e)})
 
-def login():
-    pass
+def login(email):
+    try:
+        if email not in email_map:
+            User(email)
+        return email_map[email].jsonify()
+    except Exception as e:
+        return json.dumps({'err': str(e)})
 
 def add(u_id, spotify_id):
     try:
