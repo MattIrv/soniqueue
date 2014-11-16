@@ -153,7 +153,7 @@ def get_position(p_id, u_id):
     # try:
         cur_user = user_map[u_id]
         cur_party = party_map[p_id]
-        return cur_party.get_user_position(user)
+        return json.dumps({'user_pos': str(cur_party.get_user_position(user))})
     # except Exception as e:
         return json.dumps({'err': str(e)})
 
