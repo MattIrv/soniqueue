@@ -36,7 +36,6 @@ public class SongViewButtonAdapter extends ArrayAdapter<Song> {
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View rowView = inflater.inflate(R.layout.song_list_view_with_button, parent, false);
         ImageView albumArtView = (ImageView) rowView.findViewById(R.id.imageview_album_art_b);
-        //TODO: Retrieve the album art from the interwebs.
         TextView songNameView = (TextView) rowView.findViewById(R.id.textview_song_name_b);
         songNameView.setText(song.songName);
         TextView artistNameView = (TextView) rowView.findViewById(R.id.textview_artist_name_b);
@@ -56,8 +55,6 @@ public class SongViewButtonAdapter extends ArrayAdapter<Song> {
                 d.setView(text);
                 d.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
-                        //TODO: Make API call to remove
-
                         Thread thread = new Thread(new Runnable() {
                             public void run() {
                                 MakeRequest.removeSongFromQueue(MyUser.userId+"", song.song_id);
@@ -83,7 +80,11 @@ public class SongViewButtonAdapter extends ArrayAdapter<Song> {
             @Override
             public void onClick(View view) {
                 if (position != 0) {
-                    //TODO: Make API call to move up
+                    Thread thread = new Thread(new Runnable() {
+                        public void run() {
+                            MakeRequest.moveSong(MyUser.userId, song.song_id, -1);
+                        }
+                    });
                     objects.remove(song);
                     objects.add(position-1, song);
                     notifyDataSetChanged();
@@ -96,7 +97,11 @@ public class SongViewButtonAdapter extends ArrayAdapter<Song> {
             @Override
             public void onClick(View view) {
                 if (position != objects.size()-1) {
-                    //TODO: Make API call to move up
+                    Thread thread = new Thread(new Runnable() {
+                        public void run() {
+                            MakeRequest.moveSong(MyUser.userId, song.song_id, 1);
+                        }
+                    });
                     objects.remove(song);
                     objects.add(position+1, song);
                     notifyDataSetChanged();
