@@ -481,7 +481,7 @@ public class MakeRequest {
             json.put("artist_name", artistName);
             json.put("album_name", albumName);
             json.put("album_cover_url", albumCoverURL);
-            System.out.println(json.toString());
+            //Log.d("MakeRequest", json.toString());
             StringEntity se = new StringEntity(json.toString());
             se.setContentType("application/json");
             request.setEntity(se);
