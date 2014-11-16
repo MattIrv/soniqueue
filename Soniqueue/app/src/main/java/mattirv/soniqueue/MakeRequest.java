@@ -370,8 +370,15 @@ public class MakeRequest {
         }
     }
 
-    public static void addSong(final SongSearch context){
+    public static void addSong(final SongSearch context, int user_id, String spotify_id){
         HttpClient client = new DefaultHttpClient();
-        int party_id = context
+        String url = "http://soniqueue.com/user/" + user_id + "/add/" + spotify_id;
+        HttpPost request = new HttpPost(url);
+        HttpResponse response;
+        try {
+            response = client.execute(request);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
     }
 }

@@ -71,7 +71,7 @@ public class SongSearch extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void updateSongs(List<Song> songs) {
+    public void updateSongs(final List<Song> songs) {
         TextView searchText = (TextView) findViewById(R.id.textview_search_term);
         searchText.setText("Showing results for " + searchterm);
         ListView listview = (ListView) findViewById(R.id.listView);
@@ -80,7 +80,14 @@ public class SongSearch extends Activity {
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int index, long id) {
-                //TODO: API call to add to queue
+                //TODO: API call to add to queue still needs the user_id
+                final String spotify_id = songs.get(index).spotify_id;
+                Thread thread = new Thread(new Runnable() {
+                    public void run() {
+                        MakeRequest.addSong(context, 0, spotify_id );//TODO: user_id goes here
+                    }
+                });
+                thread.start();
                 Intent intent = new Intent(getBaseContext(), MyQueue.class);
                 intent.putExtra("EMAIL", email);
                 intent.putExtra("PARTY_NAME", partyName);
