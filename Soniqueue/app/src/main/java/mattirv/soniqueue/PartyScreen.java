@@ -19,6 +19,8 @@ public class PartyScreen extends Activity {
     String partyName = null;
     boolean isLeader = false;
 
+    final PartyScreen context = this;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -146,6 +148,14 @@ public class PartyScreen extends Activity {
         d.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
                 //TODO: Make API call
+
+                Thread thread = new Thread(new Runnable() {
+                    public void run() {
+                        MakeRequest.endParty(context);
+                    }
+                });
+                thread.start();
+
                 Intent intent = new Intent(getBaseContext(), MainMenu.class);
                 intent.putExtra("EMAIL", email);
                 startActivity(intent);
