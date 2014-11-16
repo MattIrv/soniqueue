@@ -48,10 +48,10 @@ public class MyQueue extends Activity {
 
         //TODO: MJK6ZT: nth needs to be changed to actual queue position - Signed off by CJE4SW
 
-        //TODO: CJE4SW: change final input to getUserPosition to user_id when implemented
+        //TODO: CJE4SW: change final input to getUserPosition to user_id when implemented - Signed off by CJE4sw
         Thread thread = new Thread(new Runnable() {
             public void run() {
-                MakeRequest.getUserPosition(context, partyId, 0);
+                MakeRequest.getUserPosition(context, partyId, MyUser.userId);
             }
         });
         thread.start();

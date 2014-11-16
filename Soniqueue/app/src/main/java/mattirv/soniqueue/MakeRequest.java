@@ -443,6 +443,7 @@ public class MakeRequest {
             Log.e("MakeRequest: getNowPlaying", e.toString());
         }
     }
+
     public static void endParty(final PartyScreen context){
         HttpClient client = new DefaultHttpClient();
         int pid = context.partyId;
@@ -456,9 +457,22 @@ public class MakeRequest {
         }
     }
 
-    public static void removeSongFromQueue(String uid, String sID){
+
+    public static void removeSongFromQueue(String uid, String sID) {
         HttpClient client = new DefaultHttpClient();
-        String url = "http://soniqueue.com/user/"+uid+"/remove/"+sID;
+        String url = "http://soniqueue.com/user/" + uid + "/remove/" + sID;
+        HttpPost request = new HttpPost(url);
+        HttpResponse response;
+        try {
+            response = client.execute(request);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void addSong(final SongSearch context, int user_id, String spotify_id){
+        HttpClient client = new DefaultHttpClient();
+        String url = "http://soniqueue.com/user/" + user_id + "/add/" + spotify_id;
         HttpPost request = new HttpPost(url);
         HttpResponse response;
         try {
