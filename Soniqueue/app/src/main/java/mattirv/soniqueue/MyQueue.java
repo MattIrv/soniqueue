@@ -46,9 +46,6 @@ public class MyQueue extends Activity {
             }
         });
 
-        //TODO: MJK6ZT: nth needs to be changed to actual queue position - Signed off by CJE4SW
-
-        //TODO: CJE4SW: change final input to getUserPosition to user_id when implemented - Signed off by CJE4sw
         Thread thread = new Thread(new Runnable() {
             public void run() {
                 MakeRequest.getUserPosition(context, partyId, MyUser.userId);
@@ -75,7 +72,6 @@ public class MyQueue extends Activity {
         d.setPositiveButton("Search", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
                 String searchterm = input.getText().toString();
-                //TODO: Send API call and advance to next screen
                 Intent intent = new Intent(getBaseContext(), SongSearch.class);
                 intent.putExtra("SEARCHTERM", searchterm);
                 intent.putExtra("PARTY_ID", partyId);

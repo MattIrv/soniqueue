@@ -80,11 +80,10 @@ public class SongSearch extends Activity {
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int index, long id) {
-                //TODO: API call to add to queue still needs the user_id
                 final String spotify_id = songs.get(index).spotify_id;
                 Thread thread = new Thread(new Runnable() {
                     public void run() {
-                        MakeRequest.addSong( MyUser.userId, spotify_id );//TODO: user_id goes here - Signed off by CJE4SW
+                        MakeRequest.addSong( MyUser.userId, spotify_id );
                     }
                 });
                 thread.start();

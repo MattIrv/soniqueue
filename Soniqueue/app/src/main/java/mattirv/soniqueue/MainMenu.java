@@ -114,7 +114,6 @@ public class MainMenu extends Activity implements
         d.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
                 final String partyName = input.getText().toString();
-                //TODO: Send API call and advance to next screen
                 Thread thread = new Thread (new Runnable() {
                     @Override
                     public void run() {

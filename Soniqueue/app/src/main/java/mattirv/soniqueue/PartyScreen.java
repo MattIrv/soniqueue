@@ -151,7 +151,6 @@ public class PartyScreen extends Activity {
         d.setView(text);
         d.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
-                //TODO: Make API call
                 Thread thread = new Thread(new Runnable() {
                    public void run() {
                        MakeRequest.leaveParty(context , MyUser.userId);
