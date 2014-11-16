@@ -85,6 +85,12 @@ public class PartyScreen extends Activity {
     }
 
     public void setNowPlaying(Song nowPlaying){
+
+        if(nowPlaying == null){
+            TextView songNameText = (TextView) findViewById(R.id.textview_song_name);
+            songNameText.setText("No song is currently playing");
+            return;
+        }
         //Log.d("PartyScreen", String.format("Song name: %s, Artist: %s, Album: %s, Queued By: %s", nowPlaying.songName, nowPlaying.artist, nowPlaying.album, nowPlaying.queuedBy));
         TextView songNameText = (TextView) findViewById(R.id.textview_song_name);
         songNameText.setText(nowPlaying.songName);
