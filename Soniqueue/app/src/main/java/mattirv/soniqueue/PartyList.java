@@ -18,6 +18,9 @@ import java.util.List;
 public class PartyList extends Activity {
 
     String email = null;
+    List<Party> parties = null;
+
+    final PartyList context = this;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,24 +31,31 @@ public class PartyList extends Activity {
             email = (String)extras.get("EMAIL");
         }
         ListView listview = (ListView) findViewById(R.id.listView);
-        ArrayList<String> myStringArray1 = new ArrayList<String>();
-        myStringArray1.add("Placeholder Party 1");
-        myStringArray1.add("Placeholder Party 2");
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, myStringArray1);
-        listview.setAdapter(adapter);
-        adapter.notifyDataSetChanged();
+//        ArrayList<String> myStringArray1 = new ArrayList<String>();
+//        myStringArray1.add("Placeholder Party 1");
+//        myStringArray1.add("Placeholder Party 2");
+//        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, myStringArray1);
+//        listview.setAdapter(adapter);
+//        adapter.notifyDataSetChanged();
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int index, long id) {
                 //TODO: Work with lists. For now we just treat the index as the party id.
                 Intent intent = new Intent(getBaseContext(), PartyScreen.class);
                 intent.putExtra("EMAIL", email);
-                intent.putExtra("PARTY_NAME", (String)(adapterView.getItemAtPosition(index)));
-                intent.putExtra("PARTY_ID", 5);
+                intent.putExtra("PARTY_NAME", parties.get(index).partyName);
+                intent.putExtra("PARTY_ID", parties.get(index).partyId);
                 intent.putExtra("IS_LEADER", false);
                 startActivity(intent);
             }
         });
+
+        Thread thread = new Thread(new Runnable() {
+            public void run() {
+                MakeRequest.getParties(context);
+            }
+        });
+        thread.start();
     }
 
 
@@ -69,6 +79,7 @@ public class PartyList extends Activity {
     }
 
     public void updateParties(List<Party> parties) {
+        this.parties = parties;
         ListView listview = (ListView) findViewById(R.id.listView);
         ArrayList<String> myStringArray1 = new ArrayList<String>();
         for (int i = 0; i < parties.size(); i++) {

@@ -1,14 +1,18 @@
 package mattirv.soniqueue;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class NowPlaying extends Activity {
@@ -62,5 +66,12 @@ public class NowPlaying extends Activity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void updateSongs(List<Song> rgsong) {
+        ListView listview = (ListView) findViewById(R.id.listView);
+        SongViewAdapter adapter = new SongViewAdapter(this, rgsong, false);
+        listview.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
     }
 }
