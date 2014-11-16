@@ -106,6 +106,11 @@ class SetLocationHandler(tornado.web.RequestHandler):
         location = data['location']
         self.write(util.set_location(u_id, location))
 
+class GetPositionHandler(tornado.web.RequestHandler):
+    def post(self, party_id, user_id):
+        p_id = int(party_id)
+        u_id = int(user_id)
+        self.write(util.get_position(p_id, u_id))
 
 
 application = tornado.web.Application([
@@ -129,6 +134,7 @@ application = tornado.web.Application([
     (r'/user/([0-9]+)/info', UserInfoHandler),
     (r'/user/([0-9]+)/setalias', SetAliasHandler),
     (r'/user/([0-9]+)/setlocation', SetLocationHandler),
+    (r'/party/([0-9]+)/getposition/([0-9]+)', GetPositionHandler)
 
 ])
 
