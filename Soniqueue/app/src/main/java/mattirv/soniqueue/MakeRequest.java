@@ -302,10 +302,6 @@ public class MakeRequest {
             Log.e("MakeRequest: getNowPlaying", e.toString());
         }
     }
-<<<<<<< HEAD
-}
-=======
-
     public static void endParty(final PartyScreen context){
         HttpClient client = new DefaultHttpClient();
         int pid = context.partyId;
@@ -319,4 +315,3 @@ public class MakeRequest {
         }
     }
 }
->>>>>>> 499a0733b50de95ff89ea15f4f3f949018bbd21d
