@@ -10,6 +10,7 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpUriRequest;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.HttpParams;
 import org.apache.http.util.EntityUtils;
@@ -20,7 +21,9 @@ import org.json.JSONObject;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Created by Matthew on 11/15/14.
@@ -164,6 +167,90 @@ public class MakeRequest {
         catch (JSONException e) {
             System.out.println("ERROR: " + e);
             return;
+        }
+    }
+
+    public static int createParty(int userId, String name, String location) {
+        HttpClient client = new DefaultHttpClient();
+        String url = "http://soniqueue.com/party/create/" + userId;
+        HttpPost request = new HttpPost(url);
+        JSONObject json = new JSONObject();
+        try {
+            json.put("name", name);
+            json.put("location", location);
+            StringEntity se = new StringEntity(json.toString());
+            se.setContentType("application/json");
+            request.setEntity(se);
+            HttpResponse response;
+            response = client.execute(request);
+            StatusLine status = response.getStatusLine();
+            if (status.getStatusCode() >= 300) {
+                throw new IOException("Request failed with status " + status.getStatusCode());
+            }
+            BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
+
+            StringBuffer result = new StringBuffer();
+            String line = "";
+            while ((line = rd.readLine()) != null) {
+                result.append(line);
+            }
+
+            JSONObject o = new JSONObject(result.toString());
+            int partyId = o.getInt("party_id");
+            MyUser.partyId = o.getInt("party_id");
+            return partyId;
+        }
+        catch (IOException e) {
+            System.out.println("ERROR: " + e);
+            return -1;
+        }
+        catch (JSONException e) {
+            System.out.println("ERROR: " + e);
+            return -1;
+        }
+    }
+
+    public static int login(String email, String location) {
+        HttpClient client = new DefaultHttpClient();
+        String url = "http://soniqueue.com/lobby/login/";
+        HttpPost request = new HttpPost(url);
+        JSONObject json = new JSONObject();
+        try {
+            json.put("email", email);
+            json.put("location", location);
+            StringEntity se = new StringEntity(json.toString());
+            se.setContentType("application/json");
+            request.setEntity(se);
+            HttpResponse response;
+            response = client.execute(request);
+            StatusLine status = response.getStatusLine();
+            if (status.getStatusCode() >= 300) {
+                throw new IOException("Request failed with status " + status.getStatusCode());
+            }
+            BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
+
+            StringBuffer result = new StringBuffer();
+            String line = "";
+            while ((line = rd.readLine()) != null) {
+                result.append(line);
+            }
+
+            JSONObject o = new JSONObject(result.toString());
+            int userId = o.getInt("user_id");
+            MyUser.userId = userId;
+            MyUser.partyId = o.getInt("party_id");
+            MyUser.alias = o.getString("alias");
+            MyUser.email = o.getString("email");
+            MyUser.location = o.getString("location");
+            return userId;
+        }
+        catch (IOException e) {
+            System.out.println("ERROR: " + e);
+            return -1;
+        }
+        catch (JSONException e) {
+            System.out.println("ERROR: " + e);
+            return -1;
         }
     }
 
