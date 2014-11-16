@@ -633,4 +633,16 @@ public class MakeRequest {
             e.printStackTrace();
         }
     }
+
+    public static void joinParty(int user_id, int party_id) {
+        HttpClient client = new DefaultHttpClient();
+        String url = "http://soniqueue.com/party/" + party_id + "/join/" + user_id;
+        HttpPost request = new HttpPost(url);
+        HttpResponse response;
+        try {
+            response = client.execute(request);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+    }
 }

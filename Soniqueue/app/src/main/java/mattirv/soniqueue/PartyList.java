@@ -71,8 +71,14 @@ public class PartyList extends Activity {
         listview.setAdapter(adapter);
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int index, long id) {
-                //TODO: API call to add to queue
+            public void onItemClick(AdapterView<?> adapterView, View view, final int index, long id) {
+                Thread thread = new Thread (new Runnable() {
+                    @Override
+                    public void run() {
+                        MakeRequest.joinParty(MyUser.userId, partiesFinal.get(index).partyId);
+                    }
+                });
+                thread.start();
                 Intent intent = new Intent(getBaseContext(), PartyScreen.class);
                 intent.putExtra("EMAIL", email);
                 intent.putExtra("PARTY_NAME", partiesFinal.get(index).partyName);

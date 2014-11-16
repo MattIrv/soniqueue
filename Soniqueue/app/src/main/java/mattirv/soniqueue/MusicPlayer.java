@@ -40,6 +40,7 @@ public class MusicPlayer extends Service {
         Thread thread = new Thread(new Runnable() {
             public void run() {
                 while (nowPlaying == null) {
+                    Log.d("MusicPlayer", "Making request to play next song...");
                     MakeRequest.playNextSong(context, MainMenu.partyID);
                     try {
                         wait(10000);
@@ -48,7 +49,11 @@ public class MusicPlayer extends Service {
 
                     }
                     catch (IllegalMonitorStateException e) {
-                        break;
+                        int i=0;
+                        for (; i<10000000; i++) {
+                            if (i%100000 == 0)
+                                Log.d("MusicPlayer", i + "");
+                        }
                     }
                 }
             }

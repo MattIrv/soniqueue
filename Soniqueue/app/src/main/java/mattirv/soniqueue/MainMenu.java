@@ -118,12 +118,14 @@ public class MainMenu extends Activity implements
                     @Override
                     public void run() {
                         partyID = MakeRequest.createParty(MyUser.userId, partyName, "");
+                        MakeRequest.joinParty(MyUser.userId, partyID);
                         Intent intent = new Intent(getBaseContext(), PartyScreen.class);
                         intent.putExtra("EMAIL", email);
                         intent.putExtra("PARTY_ID", partyID);
                         intent.putExtra("PARTY_NAME", partyName);
                         intent.putExtra("IS_LEADER", true);
                         startActivity(intent);
+                        Log.d("MainMenu", "Trying to play next song");
                         MusicPlayer.getInstance().playNextSong();
                     }
                 });
