@@ -10,7 +10,6 @@ class User(object):
 		self.user_id = User.cur_user_id
 		self.email = email
 		self.alias = email
-		self.location = location
 		self.party = None
 		self.queue = queues.UserQueue()
 		User.email_map[self.email] = self
@@ -32,10 +31,10 @@ class User(object):
 	def set_party(self, party):
 		self.party = party
 
-	def jsonify(self):
-		return json.dumps({'user_id': self.user_id, 'email': self.email, 'queue': self.queue.list(),
-			'alias': self.alias, 'location': self.location, 'party': self.party})
-
 	def abrev_json(self):
-		return json.dumps({'user_id': self.user_id, 'email': self.email, 'alias': self.alias,
-			'location': self.location, 'party_id': self.party.party_id})
+		if self.party:
+			return json.dumps({'user_id': self.user_id, 'email': self.email, 'alias': self.alias,
+				'location': self.location, 'party_id': self.party.party_id})
+		else:
+			return json.dumps({'user_id': self.user_id, 'email': self.email, 'alias': self.alias,
+				'location': self.location, 'party_id': None})

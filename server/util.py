@@ -1,6 +1,7 @@
-import Party
-import User
-import Song
+from party import Party
+from user import User
+from song import Song
+import json
 
 party_map = Party.party_map
 user_map = User.user_map
@@ -100,14 +101,14 @@ def move(u_id, s_id, disp):
 
 def list_user_queue(u_id):
     try:
-        user_queue = [song.abrev_json() for song in user_map[u_id].queue.list()]
+        user_queue = [song.get_dict() for song in user_map[u_id].queue.list()]
         return json.dumps({'user_queue': user_queue})
     except Exception as e:
         return json.dumps({'err': str(e)})
 
 def list_party_queue(p_id):
     try:
-        party_queue = [song.abrev_json() for song in party_map[p_id].queue.list()]
+        party_queue = [song.get_dict() for song in party_map[p_id].queue.list()]
         return json.dumps({'party_queue': party_queue})
     except Exception as e:
         return json.dumps({'err': str(e)})

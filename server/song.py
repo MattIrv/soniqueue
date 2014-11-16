@@ -1,5 +1,6 @@
 import user
 import queues
+import json
 
 class Song(object):
 	song_map = {}
@@ -19,8 +20,8 @@ class Song(object):
 		return "Song(%s, %s)" % (str(self.song_id), str(self.spotify_id))
 
 	def abrev_json(self):
-		return json.dumps({'song_id': self.song_id, 'spotify_id': self.spotify_id,
-			'user_id': self.user.user_id, 'user_alias': self.user.alias})
+		return json.dumps(self.get_dict())
 
-	def to_dict(self):
-		return {'song_id': self.song_id, 'spotify_id': self.spotify_id, 'user_id': self.user.user_id, 'user_alias': self.user.alias}
+	def get_dict(self):
+		return {'song_id': self.song_id, 'spotify_id': self.spotify_id,
+			'user_id': self.user.user_id, 'user_alias': self.user.alias}

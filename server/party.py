@@ -44,10 +44,13 @@ class Party(object):
 		now_playing = song
 
 	def abrev_json(self):
-		return json.dumps({'party_id': self.party_id, 'name': self.name,
+		return json.dumps(self.get_dict())
+
+	def get_dict(self):
+		return {'party_id': self.party_id, 'name': self.name, 
 			'location': self.location, 'host_id': self.host.user_id, 'host_alias': self.host.alias}
 
 	@staticmethod
-	def jsonify_parties_ids():
-		party_list = [value.abrev_json() for key, value in party_map.iteritems()]
+	def jsonify_parties():
+		party_list = [value.get_dict() for key, value in Party.party_map.iteritems()]
 		return json.dumps({'party_list': party_list})
