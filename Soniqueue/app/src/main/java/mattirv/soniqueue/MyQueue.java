@@ -93,12 +93,7 @@ public class MyQueue extends Activity {
         });
         thread2.start();
 
-        Thread thread3 = new Thread(new Runnable() {
-            public void run() {
-                MakeRequest.nowPlayingFromMyQueue(context);
-            }
-        });
-        thread3.start();
+
 
     }
 
@@ -148,30 +143,6 @@ public class MyQueue extends Activity {
             return true;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    public void setNowPlaying(Song nowPlaying){
-
-        if(nowPlaying == null){
-            TextView songNameText = (TextView) findViewById(R.id.textview_song_name);
-            songNameText.setText("No song is currently playing");
-            return;
-        }
-
-        //Log.d("MyQueue", String.format("Song name: %s, Artist: %s, Album: %s, Queued By: %s", nowPlaying.songName, nowPlaying.artist, nowPlaying.album, nowPlaying.queuedBy));
-        TextView songNameText = (TextView) findViewById(R.id.textview_song_name);
-        songNameText.setText(nowPlaying.songName);
-        TextView artistText = (TextView) findViewById(R.id.textview_artist_name);
-        artistText.setText(nowPlaying.artist);
-        TextView albumText = (TextView) findViewById(R.id.textview_album_name);
-        albumText.setText(nowPlaying.album);
-        TextView queuedByText = (TextView) findViewById(R.id.textview_queued_by);
-        queuedByText.setText("Queued by " + nowPlaying.queuedBy);
-        ImageView albumArtView = (ImageView) findViewById(R.id.imageview_album_art);
-        if (nowPlaying.image != null) {
-            albumArtView.setImageBitmap(nowPlaying.image);
-        }
-
     }
 
 

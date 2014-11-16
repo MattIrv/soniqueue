@@ -569,7 +569,7 @@ public class MakeRequest {
         }
     }
 
-    public static void nowPlayingFromMyQueue(final MyQueue context){
+    public static void nowPlayingFromMyQueue(final NowPlaying context){
         HttpClient client = new DefaultHttpClient();
         int party_id = context.partyId;
         String url = "http://soniqueue.com/party/" + party_id + "/nowplaying";
