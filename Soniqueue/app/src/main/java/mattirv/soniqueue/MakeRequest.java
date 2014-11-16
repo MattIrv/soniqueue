@@ -302,6 +302,7 @@ public class MakeRequest {
             Log.e("MakeRequest: getNowPlaying", e.toString());
         }
     }
+
     public static void endParty(final PartyScreen context){
         HttpClient client = new DefaultHttpClient();
         int pid = context.partyId;
@@ -313,5 +314,10 @@ public class MakeRequest {
         }catch(Exception e){
             e.printStackTrace();
         }
+    }
+
+    public static void addSong(final SongSearch context){
+        HttpClient client = new DefaultHttpClient();
+        int party_id = context
     }
 }
