@@ -493,4 +493,17 @@ public class MakeRequest {
             e.printStackTrace();
         }
     }
+
+    public static void leaveParty(final PartyScreen context, int user_id){
+        HttpClient client = new DefaultHttpClient();
+        int party_id = context.partyId;
+        String url = "http://soniqueue.com/party/" + party_id + "/leave/" + user_id;
+        HttpPost request = new HttpPost(url);
+        HttpResponse response;
+        try {
+            response = client.execute(request);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+    }
 }
