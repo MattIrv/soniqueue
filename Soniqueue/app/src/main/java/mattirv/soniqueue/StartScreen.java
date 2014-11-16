@@ -74,6 +74,14 @@ public class StartScreen extends Activity {
             // Receiving a result from the AccountPicker
             if (resultCode == RESULT_OK) {
                 email = data.getStringExtra(AccountManager.KEY_ACCOUNT_NAME);
+
+                Thread thread = new Thread(new Runnable() {
+                    public void run() {
+                        MakeRequest.login(email, "Mars");
+                    }
+                });
+                thread.start();
+
                 Intent intent = new Intent(getBaseContext(), MainMenu.class);
                 intent.putExtra("EMAIL", email);
                 startActivity(intent);
