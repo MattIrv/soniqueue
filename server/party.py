@@ -2,6 +2,7 @@ import queues
 import song
 import user
 import json
+import copy
 
 class Party(object):
 	party_map = {}
@@ -12,7 +13,7 @@ class Party(object):
 		self.host = host
 		self.location = location
 		self.users = set()
-		self.queue = queues.PartyQueue()
+		self.queue = []
 		self.now_playing = None
 		self.party_id = Party.cur_party_id
 		Party.party_map[self.party_id] = self
@@ -26,18 +27,20 @@ class Party(object):
 
 	def add_user(self, user):
 		self.users.add(user)
-		self.queue.add_user(user)
+		if user.queue.list() and user not in self.queue:
+			self.queue.append(user)
 		user.set_party(self)
 
 	def remove_user(self, user):
 		self.users.remove(user)
-		self.queue.remove_user(user)
+		if user in self.queue: #if the user has a queue, then they are in the partyqueue so we remove them
+			self.queue.remove(user)
 		user.set_party(None)
 
 	def end(self):
 		for user in self.users:
 			user.party = None
-		self.queue = queues.PartyQueue()
+		self.queue = []
 		Party.party_map.pop(self.party_id)
 
 	def next_song(self):
@@ -55,6 +58,27 @@ class Party(object):
 	def get_dict(self):
 		return {'party_id': self.party_id, 'name': self.name, 
 			'location': self.location, 'host_id': self.host.user_id, 'host_alias': self.host.alias}
+
+	def top(self):
+		if self.queue:
+			return self.queue[0]
+		else:
+			return None
+
+	def pop(self): #removes the top user from the queue and returns it
+		if self.queue: #if there is a user on the queue
+			return self.queue.pop(0)
+		else:
+			return None
+
+	def list(self): #returns a list of songs
+		temp_list = [copy.deepcopy(user.queue.list()) for user in self.queue]
+		ret_list = []
+		while temp_list:
+			temp_list = [queue for queue in temp_list if queue] #removes all empty list elements from temp_list
+			for queue in temp_list:
+				ret_list.append(queue.pop(0))		
+		return ret_list
 
 	@staticmethod
 	def jsonify_parties():
