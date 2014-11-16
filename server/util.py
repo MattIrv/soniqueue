@@ -23,15 +23,18 @@ def end(p_id):
 
 def next(p_id):
     try:
-        next_song = party_map[p_id].next().top()
+        next_song = party_map[p_id].next_song()
         return next_song.jsonify()
     except Exception as e:
         return json.dumps({'err': str(e)})
 
-def nowplaying(p_id):
+def now_playing(p_id):
     try:
-        cur_song = party_map[p_id].nowplaying
-        return cur_song.jsonify()
+        cur_song = party_map[p_id].now_playing
+        if cur_song:
+            return cur_song.jsonify()
+        else:
+            return json.dumps({})
     except Exception as e:
         return json.dumps({'err': str(e)})
 
@@ -55,11 +58,13 @@ def leave(p_id, u_id):
     except Exception as e:
         return json.dumps({'err': str(e)})
 
-def login(email):
+def login(email, location):
     try:
         if email not in email_map:
             User(email)
-        return email_map[email].jsonify()
+        user = email_map[email]
+        user.set_location(location)
+        return user.jsonify()
     except Exception as e:
         return json.dumps({'err': str(e)})
 
@@ -96,20 +101,20 @@ def move(u_id, s_id, disp):
 def list_user_queue(u_id):
     try:
         user_queue = user_map[u_id].queue.list()
-        return json.dumps({'userqueue': user_queue})
+        return json.dumps({'user_queue': user_queue})
     except Exception as e:
         return json.dumps({'err': str(e)})
 
 def list_party_queue(p_id):
     try:
         party_queue = party_map[p_id].queue.list()
-        return json.dumps({'partyqueue': party_queue})
+        return json.dumps({'party_queue': party_queue})
     except Exception as e:
         return json.dumps({'err': str(e)})
 
 def user_info(u_id):
     try:
-        return user_map[u_id].jsonify())
+        return user_map[u_id].jsonify()
     except Exception as e:
         return json.dumps({'err': str(e)})
 
@@ -117,6 +122,14 @@ def set_alias(u_id, alias):
     try:
         cur_user = user_map[u_id]
         cur_user.set_alias(alias)
+        return cur_user.jsonify()
+    except Exception as e:
+        return json.dumps({'err': str(e)})
+
+def set_location(u_id, location):
+    try:
+        cur_user = user_map[u_id]
+        cur_user.set_location(location)
         return cur_user.jsonify()
     except Exception as e:
         return json.dumps({'err': str(e)})

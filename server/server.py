@@ -19,10 +19,10 @@ class NextSongHandler(tornado.web.RequestHandler):
         p_id = int(party_id)
         return util.next(p_id)
 
-class NowplayingHandler(tornado.web.RequestHandler):
+class NowPlayingHandler(tornado.web.RequestHandler):
     def post(self, party_id):
         p_id = int(party_id)
-        return util.nowplaying(p_id)
+        return util.now_playing(p_id)
 
 class JoinPartyHandler(tornado.web.RequestHandler):
     def post(self, party_id, user_id):
@@ -44,7 +44,8 @@ class LoginHandler(tornado.web.RequestHandler):
     def post(self):
         data = json.loads(self.request.body)
         email = data['email']
-        return util.login(email)
+        location = data['location']
+        return util.login(email, location)
 
 class AddSongHandler(tornado.web.RequestHandler):
     def post(self, user_id, spotify_id):
@@ -91,6 +92,13 @@ class SetAliasHandler(tornado.web.RequestHandler):
         alias = data['alias']
         return util.set_alias(u_id, alias)
 
+class SetLocationHandler(tornado.web.RequestHandler):
+    def post(self, user_id):
+        u_id = int(user_id)
+        data = json.loads(self.request.body)
+        location = data['location']
+        return util.set_location(u_id, location)
+
 
 
 application = tornado.web.Application([
@@ -98,7 +106,7 @@ application = tornado.web.Application([
     (r'/lobby/create/([0-9]+)', CreatePartyHandler),
     (r'/party/([0-9]+)/end', EndPartyHandler),
     (r'/party/([0-9]+)/next', NextSongHandler),
-    (r'/party/([0-9]+)/nowplaying', NowplayingHandler),
+    (r'/party/([0-9]+)/nowplaying', NowPlayingHandler),
 
     (r'/party/([0-9]+)/join/([0-9]+)', JoinPartyHandler),
     (r'/lobby/list', ListPartiesHandler),
@@ -113,6 +121,7 @@ application = tornado.web.Application([
     (r'/party/([0-9]+)/list', ListPartyQueueHandler),
     (r'/user/([0-9]+)/info', UserInfoHandler),
     (r'/user/([0-9]+)/setalias', SetAliasHandler),
+    (r'/user/([0-9]+)/setlocation', SetLocationHandler),
 
 ])
 

@@ -9,7 +9,7 @@ class UserQueue(object):
 		self.queue.append(s)
 	def remove_song(self, s):
 		self.queue.remove(s) #does not remove the sID from the song_map dictionary
-	def clear_queue(self):
+	def clear(self):
 		self.queue = []
 	def top(self): #only shows what top song is, does not remove it
 		if self.queue:
@@ -23,6 +23,10 @@ class UserQueue(object):
 			return None
 	def list(self): #returns list of songs
 		return self.queue
+
+	def list_as_dicts(self):
+		return [song.to_dict() for song in self.queue]
+
 	def move(self, song, displacement):
 		index = self.queue.index(song)
 		self.queue.remove(song)
