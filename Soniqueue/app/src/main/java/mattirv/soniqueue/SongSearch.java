@@ -80,10 +80,15 @@ public class SongSearch extends Activity {
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int index, long id) {
-                final String spotify_id = songs.get(index).spotify_id;
+                Song s = songs.get(index);
+                final String spotify_id = s.spotify_id;
+                final String songName = s.songName;
+                final String artistName = s.artist;
+                final String albumName = s.album;
+                final String albumCoverURL = s.imageURL;
                 Thread thread = new Thread(new Runnable() {
                     public void run() {
-                        MakeRequest.addSong( MyUser.userId, spotify_id );
+                        MakeRequest.addSong( MyUser.userId, spotify_id, songName, artistName, albumName, albumCoverURL);
                     }
                 });
                 thread.start();
