@@ -173,11 +173,11 @@ public class MakeRequest {
 
     public static int createParty(int userId, String name, String location) {
         HttpClient client = new DefaultHttpClient();
-        String url = "http://soniqueue.com/party/create/" + userId;
+        String url = "http://soniqueue.com/lobby/create/" + userId;
         HttpPost request = new HttpPost(url);
         JSONObject json = new JSONObject();
         try {
-            json.put("name", name);
+            json.put("party_name", name);
             json.put("location", location);
             StringEntity se = new StringEntity(json.toString());
             se.setContentType("application/json");
@@ -202,18 +202,18 @@ public class MakeRequest {
             return partyId;
         }
         catch (IOException e) {
-            System.out.println("ERROR: " + e);
+            System.out.println("ERROR (" + url + "): " + e);
             return -1;
         }
         catch (JSONException e) {
-            System.out.println("ERROR: " + e);
+            System.out.println("ERROR: (" + url + "): " + e);
             return -1;
         }
     }
 
     public static int login(String email, String location) {
         HttpClient client = new DefaultHttpClient();
-        String url = "http://soniqueue.com/lobby/login/";
+        String url = "http://soniqueue.com/lobby/login";
         HttpPost request = new HttpPost(url);
         JSONObject json = new JSONObject();
         try {
@@ -239,7 +239,7 @@ public class MakeRequest {
             JSONObject o = new JSONObject(result.toString());
             int userId = o.getInt("user_id");
             MyUser.userId = userId;
-            MyUser.partyId = o.getInt("party_id");
+            //MyUser.partyId = o.getInt("party_id");
             MyUser.alias = o.getString("alias");
             MyUser.email = o.getString("email");
             MyUser.location = o.getString("location");

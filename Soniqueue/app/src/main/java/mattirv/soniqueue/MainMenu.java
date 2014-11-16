@@ -113,16 +113,22 @@ public class MainMenu extends Activity implements
         d.setView(input);
         d.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
-                String partyName = input.getText().toString();
+                final String partyName = input.getText().toString();
                 //TODO: Send API call and advance to next screen
-                partyID = 0; // We will get this from the api call
-                Intent intent = new Intent(getBaseContext(), PartyScreen.class);
-                intent.putExtra("EMAIL", email);
-                intent.putExtra("PARTY_ID", partyID);
-                intent.putExtra("PARTY_NAME", partyName);
-                intent.putExtra("IS_LEADER", true);
-                startActivity(intent);
-                MusicPlayer.getInstance().playNextSong();
+                Thread thread = new Thread (new Runnable() {
+                    @Override
+                    public void run() {
+                        partyID = MakeRequest.createParty(MyUser.userId, partyName, "");
+                        Intent intent = new Intent(getBaseContext(), PartyScreen.class);
+                        intent.putExtra("EMAIL", email);
+                        intent.putExtra("PARTY_ID", partyID);
+                        intent.putExtra("PARTY_NAME", partyName);
+                        intent.putExtra("IS_LEADER", true);
+                        startActivity(intent);
+                        MusicPlayer.getInstance().playNextSong();
+                    }
+                });
+                thread.start();
             }
         });
 
