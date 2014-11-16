@@ -71,23 +71,33 @@ def login(email, location):
 
 def add(u_id, spotify_id):
     try:
-        cur_user = user_map[u_id]
-        new_song = Song(spotify_id, cur_user)
-        cur_user.queue.add_song(new_song)
+        user = user_map[u_id]
+        new_song = Song(spotify_id, user)
+        user.queue.add_song(new_song)
+        party = user.party
+        party.queue.add_user(user)
         return json.dumps({'song_id': new_song.song_id})
     except Exception as e:
         return json.dumps({'err': str(e)})
 
 def remove(u_id, s_id):
     try:
-        user_map[u_id].queue.remove_song(song_map[s_id])
+        user = user_map[u_id]
+        user.queue.remove_song(song_map[s_id])
+        party = user.party
+        if party and not user.queue.list():
+            party.queue.remove_user(user)
         return json.dumps({})
     except Exception as e:
         return json.dumps({'err': str(e)})
 
 def clear(u_id):
     try:
-        user_map[u_id].queue.clear()        
+        user = user_map[u_id]
+        user.queue.clear()
+        party = user.party
+        if party:
+            party.queue.remove_user(user)
         return json.dumps({})
     except Exception as e:
         return json.dumps({'err': str(e)})

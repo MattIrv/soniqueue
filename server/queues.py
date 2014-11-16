@@ -50,7 +50,7 @@ class PartyQueue(object):
 		if user.queue.list() and user not in self.queue:
 			self.queue.append(user)
 	def remove_user(self, user):
-		if user.queue: #if the user has a queue, then they are in the partyqueue so we remove them
+		if user in self.queue: #if the user has a queue, then they are in the partyqueue so we remove them
 			self.queue.remove(user)
 	def top(self): #returns the top user in the user queue, does not pop them from queue
 		if self.queue:
