@@ -72,13 +72,8 @@ def login(email, location):
     # except Exception as e:
         return json.dumps({'err': str(e)})
 
-<<<<<<< HEAD
-def add(u_id, spotify_id):
-    # try:
-=======
 def add(u_id, spotify_id, song_name, artist_name, album_name, album_cover_url):
-    try:
->>>>>>> 902710228537a1bacf9660f90c725358f1f4528d
+    # try:
         user = user_map[u_id]
         new_song = Song(spotify_id, user, song_name, artist_name, album_name, album_cover_url)
         user.queue.add_song(new_song)
