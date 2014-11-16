@@ -54,10 +54,10 @@ class Party(object):
 
 	def next_song(self):
 		if self.queue:
-			user = self.queue.pop()
+			user = self.queue.pop(0)
 			if not user:
 				return None
-			song = user.queue.pop()
+			song = user.queue.pop(0)
 			self.add_user(user)
 			now_playing = song
 			return now_playing
