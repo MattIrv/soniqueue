@@ -2,6 +2,7 @@ package mattirv.soniqueue;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.util.Log;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -169,5 +170,40 @@ public class MakeRequest {
 
     public static void getUserPosition(final MyQueue context, int party_id, int user_id){
 
+    }
+
+    public static void playNextSong(final MusicPlayer context, int partyID) {
+        HttpClient client = new DefaultHttpClient();
+        String url = "http://soniqueue.com/party/" + partyID + "/next";
+        HttpPost request = new HttpPost(url);
+        HttpResponse response;
+        try {
+            response = client.execute(request);
+            StatusLine status = response.getStatusLine();
+            if (status.getStatusCode() >= 300) {
+                throw new IOException("Request failed with status " + status.getStatusCode());
+            }
+            BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
+
+            StringBuffer result = new StringBuffer();
+            String line = "";
+            while ((line = rd.readLine()) != null) {
+                result.append(line);
+            }
+
+            JSONObject o = new JSONObject(result.toString());
+            //{song_id: Int, spotify_id: String, user_id: Int, user_alias: String}
+            int songID = o.getInt("song_id");
+            String spotifyID = o.getString("spotify_id");
+            int userID = o.getInt("user_id");
+            String userAlias = o.getString("user_alias");
+            MusicPlayer.getInstance().play(spotifyID);
+        }
+        catch (IOException e) {
+            Log.e("MakeRequest: getNowPlaying", e.toString());
+        }
+        catch (JSONException e) {
+            Log.e("MakeRequest: getNowPlaying", e.toString());
+        }
     }
 }

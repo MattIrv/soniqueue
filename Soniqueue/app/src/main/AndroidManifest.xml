@@ -24,12 +24,16 @@
         <activity
             android:name=".MainMenu"
             android:label="@string/title_activity_main_menu"
-            android:launchMode="singleTask">
+            android:launchMode="singleTask" >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <data android:host="callback" android:scheme="soniqueue-redirect" />
+
+                <data
+                    android:host="callback"
+                    android:scheme="soniqueue-redirect" />
             </intent-filter>
         </activity>
         <activity
@@ -52,11 +56,15 @@
             android:name=".SongSearch"
             android:label="@string/title_activity_song_search" >
         </activity>
+
+        <service
+            android:name=".MusicPlayer"
+            android:enabled="true"
+            android:exported="true" >
+        </service>
     </application>
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-
-
 
 </manifest>
