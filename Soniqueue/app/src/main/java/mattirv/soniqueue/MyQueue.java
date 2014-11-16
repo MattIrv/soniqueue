@@ -22,6 +22,8 @@ public class MyQueue extends Activity {
     String partyName, email;
     int partyId;
 
+    final MyQueue context = this;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,12 +46,15 @@ public class MyQueue extends Activity {
             }
         });
 
-        //TODO: MJK6ZT: nth needs to be changed to actual queue position
+        //TODO: MJK6ZT: nth needs to be changed to actual queue position - Signed off by CJE4SW
 
-        TextView queuePositionText = (TextView) findViewById(R.id.textview_party_info);
-        int pos = 0;
-        
-        queuePositionText.setText("You are at spot " + pos + " in "+partyName);
+        //TODO: CJE4SW: change final input to getUserPosition to user_id when implemented
+        Thread thread = new Thread(new Runnable() {
+            public void run() {
+                MakeRequest.getUserPosition(context, partyId, 0);
+            }
+        });
+        thread.start();
 
         //TODO: MJK6ZT: how can we put something more complicated than strings into the list view?
 
@@ -116,5 +121,10 @@ public class MyQueue extends Activity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void updateUserPosition(int user_pos) {
+        TextView queuePositionText = (TextView) findViewById(R.id.textview_party_info);
+        queuePositionText.setText("You are at spot " + (user_pos + 1) + " in " + partyName);
     }
 }
