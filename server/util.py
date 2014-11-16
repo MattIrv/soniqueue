@@ -76,10 +76,10 @@ def add(u_id, spotify_id, song_name, artist_name, album_name, album_cover_url):
     # try:
         user = user_map[u_id]
         new_song = Song(spotify_id, user, song_name, artist_name, album_name, album_cover_url)
-        user.queue.add_song(new_song)
+        user.add_song(new_song)
         party = user.party
         if party:
-            party.queue.add_user(user)
+            party.add_user(user)
         return json.dumps({'song_id': new_song.song_id})
     # except Exception as e:
         return json.dumps({'err': str(e)})
@@ -87,10 +87,10 @@ def add(u_id, spotify_id, song_name, artist_name, album_name, album_cover_url):
 def remove(u_id, s_id):
     # try:
         user = user_map[u_id]
-        user.queue.remove_song(song_map[s_id])
+        user.remove_song(song_map[s_id])
         party = user.party
         if party and not user.queue.list():
-            party.queue.remove_user(user)
+            party.remove_user(user)
         return json.dumps({})
     # except Exception as e:
         return json.dumps({'err': str(e)})
@@ -98,31 +98,31 @@ def remove(u_id, s_id):
 def clear(u_id):
     # try:
         user = user_map[u_id]
-        user.queue.clear()
+        user.clear()
         party = user.party
         if party:
-            party.queue.remove_user(user)
+            party.remove_user(user)
         return json.dumps({})
     # except Exception as e:
         return json.dumps({'err': str(e)})
 
 def move(u_id, s_id, disp):
     # try:
-        user_map[u_id].queue.move(song_map[s_id], disp)
+        user_map[u_id].move(song_map[s_id], disp)
         return json.dumps({})
     # except Exception as e:
         return json.dumps({'err': str(e)})
 
 def list_user_queue(u_id):
     # try:
-        user_queue = [song.get_dict() for song in user_map[u_id].queue.list()]
+        user_queue = [song.get_dict() for song in user_map[u_id].list()]
         return json.dumps({'user_queue': user_queue})
     # except Exception as e:
         return json.dumps({'err': str(e)})
 
 def list_party_queue(p_id):
     # try:
-        party_queue = [song.get_dict() for song in party_map[p_id].queue.list()]
+        party_queue = [song.get_dict() for song in party_map[p_id].list()]
         return json.dumps({'party_queue': party_queue})
     # except Exception as e:
         return json.dumps({'err': str(e)})
