@@ -26,16 +26,22 @@ class Party(object):
 		return "Party(%s, %s, %s) : %s" % (str(self.name), str(self.host), str(self.location), str(self.party_id))
 
 	def add_user(self, user):
-		self.users.add(user)
-		if user.queue.list() and user not in self.queue:
+		if user in self.users:
+			self.users.add(user)
+		if user.list() and user not in self.queue:
 			self.queue.append(user)
 		user.set_party(self)
 
 	def remove_user(self, user):
-		self.users.remove(user)
+		if user in self.users:
+			self.users.remove(user)
 		if user in self.queue: #if the user has a queue, then they are in the partyqueue so we remove them
 			self.queue.remove(user)
 		user.set_party(None)
+
+	def remove_user_from_queue(self, user):
+		if user in self.queue:
+			self.queue.remove(user)
 
 	def end(self):
 		for user in self.users:
@@ -44,13 +50,14 @@ class Party(object):
 		Party.party_map.pop(self.party_id)
 
 	def next_song(self):
-		user = self.queue.pop()
-		if not user:
-			return None
-		song = user.queue.pop()
-		self.queue.add_user(user)
-		now_playing = song
-		return now_playing
+		if self.queue:
+			user = self.queue.pop()
+			if not user:
+				return None
+			song = user.queue.pop()
+			self.add_user(user)
+			now_playing = song
+			return now_playing
 
 	def abrev_json(self):
 		return json.dumps(self.get_dict())
@@ -62,17 +69,13 @@ class Party(object):
 	def top(self):
 		if self.queue:
 			return self.queue[0]
-		else:
-			return None
 
 	def pop(self): #removes the top user from the queue and returns it
 		if self.queue: #if there is a user on the queue
 			return self.queue.pop(0)
-		else:
-			return None
 
 	def list(self): #returns a list of songs
-		temp_list = [copy.deepcopy(user.queue.list()) for user in self.queue]
+		temp_list = [copy.deepcopy(user.list()) for user in self.queue]
 		ret_list = []
 		while temp_list:
 			temp_list = [queue for queue in temp_list if queue] #removes all empty list elements from temp_list

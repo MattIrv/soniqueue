@@ -89,7 +89,7 @@ def remove(u_id, s_id):
         user = user_map[u_id]
         user.remove_song(song_map[s_id])
         party = user.party
-        if party and not user.queue.list():
+        if party and not user.list():
             party.remove_user(user)
         return json.dumps({})
     # except Exception as e:
@@ -101,7 +101,7 @@ def clear(u_id):
         user.clear()
         party = user.party
         if party:
-            party.remove_user(user)
+            party.remove_user_from_queue(user)
         return json.dumps({})
     # except Exception as e:
         return json.dumps({'err': str(e)})
@@ -162,7 +162,9 @@ def main():
     print add(0, 'SECONDSONG',"sweet kiwi", "maroon 5", "songs about jane", "hips.com/hips.jpeg")
     print list_user_queue(0)
     print list_party_queue(0)
+    print '##CLEARING'
     print clear(0)
+    print '##DONE'
     print list_party_queue(0)
     print leave(0, 0)
     print add(0, 'THIRDSONG',"sweet kiwi", "maroon 5", "songs about jane", "hips.com/hips.jpeg")

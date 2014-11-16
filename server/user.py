@@ -35,14 +35,10 @@ class User(object):
 	def top(self): #only shows what top song is, does not remove it
 		if self.queue:
 			return self.queue[0]
-		else:
-			return None
 
 	def pop(self): #only removes top song, does not show what top song is
 		if self.queue:
 			return self.queue.pop(0)
-		else:
-			return None
 
 	def list(self): #returns list of songs
 	 	return self.queue
