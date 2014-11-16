@@ -51,8 +51,13 @@ class LoginHandler(tornado.web.RequestHandler):
 
 class AddSongHandler(tornado.web.RequestHandler):
     def post(self, user_id, spotify_id):
+        data = json.loads(self.request.body)
+        song_name = data['song_name']
+        artist_name = data['artist_name']
+        album_name = data['album_name']
+        album_cover_url = data['album_cover_url']
         u_id = int(user_id)
-        self.write(util.add(u_id, spotify_id))
+        self.write(util.add(u_id, spotify_id, song_name, artist_name, album_name, album_cover_url))
 
 class RemoveSongHandler(tornado.web.RequestHandler):
     def post(self, user_id, song_id):
