@@ -126,6 +126,12 @@ public class PartyScreen extends Activity {
         d.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
                 //TODO: Make API call
+                Thread thread = new Thread(new Runnable() {
+                   public void run() {
+                       MakeRequest.leaveParty(context , MyUser.userId);
+                   }
+                });
+
                 Intent intent = new Intent(getBaseContext(), MainMenu.class);
                 intent.putExtra("EMAIL", email);
                 startActivity(intent);
@@ -147,9 +153,7 @@ public class PartyScreen extends Activity {
         d.setView(text);
         d.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
-                //TODO: Make API call
-
-                Thread thread = new Thread(new Runnable() {
+                 Thread thread = new Thread(new Runnable() {
                     public void run() {
                         MakeRequest.endParty(context);
                     }
