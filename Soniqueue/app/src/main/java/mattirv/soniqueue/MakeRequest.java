@@ -110,4 +110,61 @@ public class MakeRequest {
         }
         return null;
     }
+    public static void getParties(final PartyList context) {
+        HttpClient client = new DefaultHttpClient();
+        String url = "http://soniqueue.com/lobby/list";
+        HttpPost request = new HttpPost(url);
+        HttpResponse response;
+        try {
+            response = client.execute(request);
+            StatusLine status = response.getStatusLine();
+            if (status.getStatusCode() >= 300) {
+                throw new IOException("Request failed with status " + status.getStatusCode());
+            }
+            BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
+
+            StringBuffer result = new StringBuffer();
+            String line = "";
+            while ((line = rd.readLine()) != null) {
+                result.append(line);
+            }
+
+            JSONObject o = new JSONObject(result.toString());
+            JSONArray partyList = o.getJSONArray("party_list");
+            int len = partyList.length();
+            ArrayList<Party> parties = new ArrayList<Party>();
+            for (int i=0; i<len; i++) {
+                Party party = new Party();
+                JSONObject p = partyList.getJSONObject(i);
+                int partyId = p.getInt("party_id");
+                String name = p.getString("name");
+                String location = p.getString("location");
+                int hostId = p.getInt("host_id");
+                String hostAlias = p.getString("host_alias");
+                party.partyId = partyId;
+                party.name = name;
+                party.location = location;
+                party.hostId = hostId;
+                party.hostAlias = hostAlias;
+                parties.add(party);
+            }
+            final ArrayList<Party> finalParties = parties;
+            context.runOnUiThread(new Runnable(){
+                @Override
+                public void run() {
+                    context.updateParties(finalParties);
+                }
+            });
+        }
+        catch (IOException e) {
+            System.out.println("ERROR: " + e);
+            return;
+        }
+        catch (JSONException e) {
+            System.out.println("ERROR: " + e);
+            return;
+        }
+    }
+    public static void getPartyQueue(final )
+    public static void getUserQueue(final )
 }
