@@ -85,7 +85,7 @@ public class PartyScreen extends Activity {
     }
 
     public void setNowPlaying(Song nowPlaying){
-        Log.d("PartyScreen", String.format("Song name: %s, Artist: %s, Album: %s, Queued By: %s", nowPlaying.songName, nowPlaying.artist, nowPlaying.album, nowPlaying.queuedBy));
+        //Log.d("PartyScreen", String.format("Song name: %s, Artist: %s, Album: %s, Queued By: %s", nowPlaying.songName, nowPlaying.artist, nowPlaying.album, nowPlaying.queuedBy));
         TextView songNameText = (TextView) findViewById(R.id.textview_song_name);
         songNameText.setText(nowPlaying.songName);
         TextView artistText = (TextView) findViewById(R.id.textview_artist_name);
@@ -98,8 +98,6 @@ public class PartyScreen extends Activity {
         if (nowPlaying.image != null) {
             albumArtView.setImageBitmap(nowPlaying.image);
         }
-
-
 
     }
 

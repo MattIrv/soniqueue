@@ -559,4 +559,57 @@ public class MakeRequest {
             e.printStackTrace();
         }
     }
+
+    public static void nowPlayingFromMyQueue(final MyQueue context){
+        HttpClient client = new DefaultHttpClient();
+        int party_id = context.partyId;
+        String url = "http://soniqueue.com/party/" + party_id + "/nowplaying";
+        HttpPost request = new HttpPost(url);
+        HttpResponse response;
+        try {
+            response = client.execute(request);
+            StatusLine status = response.getStatusLine();
+            if (status.getStatusCode() >= 300) {
+                throw new IOException("Request to url " + url + "failed with status " + status.getStatusCode());
+            }
+            BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
+
+            StringBuffer result = new StringBuffer();
+            String line = "";
+            while ((line = rd.readLine()) != null) {
+                result.append(line);
+            }
+
+            Log.d("MakeRequest: nowPlayingFromPartyScreen", result.toString());
+
+            JSONObject o = new JSONObject(result.toString());
+            //{song_id: Int, spotify_id: String, user_id: Int, user_alias: String}
+            int songID = o.getInt("song_id");
+            String spotifyID = o.getString("spotify_id");
+            int userID = o.getInt("user_id");
+            String userAlias = o.getString("user_alias");
+            String imgURL = o.getString("album_cover_url");
+            String songName = o.getString("song_name");
+            String artistName = o.getString("artist_name");
+            String albumName = o.getString("album_name");
+            Song song = new Song();
+            song.song_id = songID + "";
+            song.queuedBy = userAlias;
+            song.spotify_id = spotifyID;
+            song.songName = songName;
+            song.album = albumName;
+            song.artist = artistName;
+            song.setImage(imgURL);
+            final Song finalSong = song;
+            context.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    context.setNowPlaying(finalSong);
+                }
+            });
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+    }
 }
