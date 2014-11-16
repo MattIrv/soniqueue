@@ -35,3 +35,7 @@ class User(object):
 	def jsonify(self):
 		return json.dumps({'user_id': self.user_id, 'email': self.email, 'queue': self.queue.list(),
 			'alias': self.alias, 'location': self.location, 'party': self.party})
+
+	def abrev_json(self):
+		return json.dumps({'user_id': self.user_id, 'email': self.email, 'alias': self.alias,
+			'location': self.location, 'party_id': self.party.party_id})

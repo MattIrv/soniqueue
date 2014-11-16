@@ -10,7 +10,7 @@ song_map = Song.song_map
 def create_party(u_id, party_name, party_location):
     try:
         new_party = Party(user_map[u_id], party_name, party_location)
-        return new_party.jsonify()
+        return json.dumps({'party_id': new_party.party_id})
     except Exception as e:
         return json.dumps({'err': str(e)})
 
@@ -24,7 +24,7 @@ def end(p_id):
 def next(p_id):
     try:
         next_song = party_map[p_id].next_song()
-        return next_song.jsonify()
+        return next_song.abrev_json()
     except Exception as e:
         return json.dumps({'err': str(e)})
 
@@ -32,7 +32,7 @@ def now_playing(p_id):
     try:
         cur_song = party_map[p_id].now_playing
         if cur_song:
-            return cur_song.jsonify()
+            return cur_song.abrev_json()
         else:
             return json.dumps({})
     except Exception as e:
@@ -64,7 +64,7 @@ def login(email, location):
             User(email)
         user = email_map[email]
         user.set_location(location)
-        return user.jsonify()
+        return user.abrev_json()
     except Exception as e:
         return json.dumps({'err': str(e)})
 
@@ -73,7 +73,7 @@ def add(u_id, spotify_id):
         cur_user = user_map[u_id]
         new_song = Song(spotify_id, cur_user)
         cur_user.queue.add_song(new_song)
-        return new_song.jsonify()
+        return json.dumps({'song_id': new_song.song_id})
     except Exception as e:
         return json.dumps({'err': str(e)})
 
@@ -100,21 +100,21 @@ def move(u_id, s_id, disp):
 
 def list_user_queue(u_id):
     try:
-        user_queue = user_map[u_id].queue.list()
+        user_queue = [song.abrev_json() for song in user_map[u_id].queue.list()]
         return json.dumps({'user_queue': user_queue})
     except Exception as e:
         return json.dumps({'err': str(e)})
 
 def list_party_queue(p_id):
     try:
-        party_queue = party_map[p_id].queue.list()
+        party_queue = [song.abrev_json() for song in party_map[p_id].queue.list()]
         return json.dumps({'party_queue': party_queue})
     except Exception as e:
         return json.dumps({'err': str(e)})
 
 def user_info(u_id):
     try:
-        return user_map[u_id].jsonify()
+        return user_map[u_id].abrev_json()
     except Exception as e:
         return json.dumps({'err': str(e)})
 
@@ -122,7 +122,7 @@ def set_alias(u_id, alias):
     try:
         cur_user = user_map[u_id]
         cur_user.set_alias(alias)
-        return cur_user.jsonify()
+        return cur_user.abrev_json()
     except Exception as e:
         return json.dumps({'err': str(e)})
 
@@ -130,6 +130,6 @@ def set_location(u_id, location):
     try:
         cur_user = user_map[u_id]
         cur_user.set_location(location)
-        return cur_user.jsonify()
+        return cur_user.abrev_json()
     except Exception as e:
         return json.dumps({'err': str(e)})

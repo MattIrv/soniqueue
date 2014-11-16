@@ -18,9 +18,9 @@ class Song(object):
 	def __str__(self):
 		return "Song(%s, %s)" % (str(self.song_id), str(self.spotify_id))
 
-	def jsonify(self):
+	def abrev_json(self):
 		return json.dumps({'song_id': self.song_id, 'spotify_id': self.spotify_id,
-			'user': self.user})
+			'user_id': self.user.user_id, 'user_alias': self.user.alias})
 
 	def to_dict(self):
 		return {'song_id': self.song_id, 'spotify_id': self.spotify_id, 'user_id': self.user.user_id, 'user_alias': self.user.alias}
