@@ -55,21 +55,21 @@ public class NowPlaying extends Activity {
     public void setNowPlaying(Song nowPlaying){
 
         if(nowPlaying == null){
-            TextView songNameText = (TextView) findViewById(R.id.textview_song_name);
+            TextView songNameText = (TextView) findViewById(R.id.textview_now_playing_song);
             songNameText.setText("No song is currently playing");
             return;
         }
 
         //Log.d("MyQueue", String.format("Song name: %s, Artist: %s, Album: %s, Queued By: %s", nowPlaying.songName, nowPlaying.artist, nowPlaying.album, nowPlaying.queuedBy));
-        TextView songNameText = (TextView) findViewById(R.id.textview_song_name);
+        TextView songNameText = (TextView) findViewById(R.id.textview_now_playing_song);
         songNameText.setText(nowPlaying.songName);
-        TextView artistText = (TextView) findViewById(R.id.textview_artist_name);
+        TextView artistText = (TextView) findViewById(R.id.textview_now_playing_artist);
         artistText.setText(nowPlaying.artist);
-        TextView albumText = (TextView) findViewById(R.id.textview_album_name);
+        TextView albumText = (TextView) findViewById(R.id.textview_now_playing_album);
         albumText.setText(nowPlaying.album);
-        TextView queuedByText = (TextView) findViewById(R.id.textview_queued_by);
+        TextView queuedByText = (TextView) findViewById(R.id.textview_now_playing_queued);
         queuedByText.setText("Queued by " + nowPlaying.queuedBy);
-        ImageView albumArtView = (ImageView) findViewById(R.id.imageview_album_art);
+        ImageView albumArtView = (ImageView) findViewById(R.id.imageview_now_playing_art);
         if (nowPlaying.image != null) {
             albumArtView.setImageBitmap(nowPlaying.image);
         }
