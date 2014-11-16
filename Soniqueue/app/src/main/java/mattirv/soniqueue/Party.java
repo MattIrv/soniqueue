@@ -7,6 +7,6 @@ public class Party {
     public String hostAlias;
     public int hostId;
     public int partyId;
-    public String name;
+    public String partyName;
     public String location;
 }

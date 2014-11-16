@@ -12,6 +12,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class PartyList extends Activity {
@@ -65,5 +66,27 @@ public class PartyList extends Activity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void updateParties(List<Party> parties) {
+        ListView listview = (ListView) findViewById(R.id.listView);
+        ArrayList<String> myStringArray1 = new ArrayList<String>();
+        for (int i = 0; i < parties.size(); i++) {
+            myStringArray1.add(parties.get(i).partyName);
+        }
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, myStringArray1);
+        listview.setAdapter(adapter);
+        listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int index, long id) {
+                //TODO: API call to add to queue
+                Intent intent = new Intent(getBaseContext(), MyQueue.class);
+//                intent.putExtra("EMAIL", email);
+//                intent.putExtra("PARTY_NAME", partyName);
+//                intent.putExtra("PARTY_ID", partyId);
+                startActivity(intent);
+            }
+        });
+        adapter.notifyDataSetChanged();
     }
 }

@@ -110,6 +110,7 @@ public class MakeRequest {
         }
         return null;
     }
+
     public static void getParties(final PartyList context) {
         HttpClient client = new DefaultHttpClient();
         String url = "http://soniqueue.com/lobby/list";
@@ -142,7 +143,7 @@ public class MakeRequest {
                 int hostId = p.getInt("host_id");
                 String hostAlias = p.getString("host_alias");
                 party.partyId = partyId;
-                party.name = name;
+                party.partyName = name;
                 party.location = location;
                 party.hostId = hostId;
                 party.hostAlias = hostAlias;
@@ -165,6 +166,7 @@ public class MakeRequest {
             return;
         }
     }
+
     public static void getPartyQueue(final )
     public static void getUserQueue(final )
 }
