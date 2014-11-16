@@ -30,11 +30,11 @@ public class MainMenu extends Activity implements
     static String email = null;
     static String displayname = null;
     static Player player = null;
+    static int partyID = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d("onCreate", "I just got created");
         setContentView(R.layout.activity_main_menu);
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
@@ -104,6 +104,7 @@ public class MainMenu extends Activity implements
     }
 
     public void startParty() {
+        Log.d("MainMenu", "Starting a party");
         final EditText input = new EditText(this);
         input.setText(displayname + "'s Party");
         AlertDialog.Builder d = new AlertDialog.Builder(this);
@@ -114,7 +115,7 @@ public class MainMenu extends Activity implements
             public void onClick(DialogInterface dialog, int whichButton) {
                 String partyName = input.getText().toString();
                 //TODO: Send API call and advance to next screen
-                int id = 5; // We will get this from the api call
+                int id = 0; // We will get this from the api call
                 Intent intent = new Intent(getBaseContext(), PartyScreen.class);
                 intent.putExtra("EMAIL", email);
                 intent.putExtra("PARTY_ID", id);
@@ -141,7 +142,6 @@ public class MainMenu extends Activity implements
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        Log.d("onNewIntent", "I MADE IT ACROSS THE OREGON TRAIL!!!!!!!");
         Uri uri = intent.getData();
         if (uri != null) {
             AuthenticationResponse response = SpotifyAuthentication.parseOauthResponse(uri);
@@ -149,6 +149,9 @@ public class MainMenu extends Activity implements
             mPlayer = spotify.getPlayer(this, "Soniqueue", this, new Player.InitializationObserver() {
                 @Override
                 public void onInitialized() {
+                    Log.d("MainMenu", "Starting the Music Player service");
+                    Intent intent1 = new Intent(getBaseContext(), MusicPlayer.class);
+                    startService(intent1);
                     mPlayer.addConnectionStateCallback(MainMenu.this);
                     mPlayer.addPlayerNotificationCallback(MainMenu.this);
                     player = mPlayer;
@@ -159,6 +162,7 @@ public class MainMenu extends Activity implements
                     System.out.println("Could not initialize player: " + throwable.getMessage());
                 }
             });
+            Log.d("MainMenu", "Calling startParty");
             startParty();
         }
     }
@@ -205,7 +209,7 @@ public class MainMenu extends Activity implements
 
     @Override
     public void onDestroy() {
-        Log.d("MainMenu", "I got destroyed.");
+        Spotify.destroyPlayer(this);
         super.onDestroy();
     }
 }

@@ -2,6 +2,7 @@ package mattirv.soniqueue;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.util.Log;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -72,7 +73,7 @@ public class MakeRequest {
                 String songName = track.getString("name");
                 song.songName = songName;
                 String songID = track.getString("id");
-                song.id = songID;
+                song.spotify_id = songID;
                 song.queuedBy = userName;
                 songs.add(song);
             }
@@ -255,6 +256,203 @@ public class MakeRequest {
     }
 
     public static void getUserPosition(final MyQueue context, int party_id, int user_id){
+        HttpClient client = new DefaultHttpClient();
+        String url = "http://soniqueue.com/party/" + party_id + "/getposition/" + user_id;
+        HttpPost request = new HttpPost(url);
+        HttpResponse response;
+        try {
+            response = client.execute(request);
+            StatusLine status = response.getStatusLine();
+            if (status.getStatusCode() >= 300) {
+                throw new IOException("Request failed with status " + status.getStatusCode());
+            }
+            BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
 
+            StringBuffer result = new StringBuffer();
+            String line = "";
+            while ((line = rd.readLine()) != null) {
+                result.append(line);
+            }
+
+            JSONObject o = new JSONObject(result.toString());
+            final int user_pos = o.getInt("user_pos");
+
+            context.runOnUiThread(new Runnable(){
+                @Override
+                public void run() {
+                    context.updateUserPosition(user_pos);
+                }
+            });
+        }
+        catch (IOException e) {
+            System.out.println("ERROR: " + e);
+            return;
+        }
+        catch (JSONException e) {
+            System.out.println("ERROR: " + e);
+            return;
+        }
+    }
+
+    public static void getPartyQueue(final NowPlaying context) {
+        HttpClient client = new DefaultHttpClient();
+        int pid = context.partyId;
+        String url = "http://soniqueue.com/party/"+pid+"/list";
+        HttpPost request = new HttpPost(url);
+        HttpResponse response;
+        try {
+            response = client.execute(request);
+            StatusLine status = response.getStatusLine();
+            if (status.getStatusCode() >= 300) {
+                throw new IOException("Request failed with status " + status.getStatusCode());
+            }
+            BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
+
+            StringBuffer result = new StringBuffer();
+            String line = "";
+            while ((line = rd.readLine()) != null) {
+                result.append(line);
+            }
+
+            JSONObject o = new JSONObject(result.toString());
+            JSONArray partyList = o.getJSONArray("party_queue");
+            int len = partyList.length();
+            ArrayList<Song> rgsong = new ArrayList<Song>();
+            for (int i=0; i<len; i++) {
+                JSONObject p = partyList.getJSONObject(i);
+
+                String imageURL = p.getString("album_cover_url");
+                String songName = p.getString("song_name");
+                String artist = p.getString("artist_name");
+                String album = p.getString("album_name");
+                String queuedBy = p.getString("user");
+                String song_id = p.getString("song_id");
+                String spotify_id = p.getString("spotify_id");
+
+                rgsong.add(new Song(imageURL,songName,artist,album,queuedBy,song_id,spotify_id));
+            }
+            final ArrayList<Song> rgsongFinal = rgsong;
+            context.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    context.updateSongs(rgsongFinal);
+                }
+            });
+        }
+        catch (IOException e) {
+            System.out.println("ERROR: " + e);
+            return;
+        }
+        catch (JSONException e) {
+            System.out.println("ERROR: " + e);
+            return;
+        }
+    }
+
+    public static void getUserQueue(final MyQueue context, int uId) {
+        HttpClient client = new DefaultHttpClient();
+        String url = "http://soniqueue.com/user/"+uId+"/list";
+        HttpPost request = new HttpPost(url);
+        HttpResponse response;
+        try {
+            response = client.execute(request);
+            StatusLine status = response.getStatusLine();
+            if (status.getStatusCode() >= 300) {
+                throw new IOException("Request failed with status " + status.getStatusCode());
+            }
+            BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
+
+            StringBuffer result = new StringBuffer();
+            String line = "";
+            while ((line = rd.readLine()) != null) {
+                result.append(line);
+            }
+
+            JSONObject o = new JSONObject(result.toString());
+            JSONArray partyList = o.getJSONArray("user_queue");
+            int len = partyList.length();
+            ArrayList<Song> rgsong = new ArrayList<Song>();
+            for (int i=0; i<len; i++) {
+                JSONObject p = partyList.getJSONObject(i);
+
+                String imageURL = p.getString("album_cover_url");
+                String songName = p.getString("song_name");
+                String artist = p.getString("artist_name");
+                String album = p.getString("album_name");
+                String queuedBy = p.getString("user");
+                String song_id = p.getString("song_id");
+                String spotify_id = p.getString("spotify_id");
+
+                rgsong.add(new Song(imageURL,songName,artist,album,queuedBy,song_id,spotify_id));
+            }
+            final ArrayList<Song> rgsongFinal = rgsong;
+            context.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    context.updateSongs(rgsongFinal);
+                }
+            });
+        }
+        catch (IOException e) {
+            System.out.println("ERROR: " + e);
+            return;
+        }
+        catch (JSONException e) {
+            System.out.println("ERROR: " + e);
+            return;
+        }
+    }
+
+
+
+    public static void playNextSong(final MusicPlayer context, int partyID) {
+        HttpClient client = new DefaultHttpClient();
+        String url = "http://soniqueue.com/party/" + partyID + "/next";
+        HttpPost request = new HttpPost(url);
+        HttpResponse response;
+        try {
+            response = client.execute(request);
+            StatusLine status = response.getStatusLine();
+            if (status.getStatusCode() >= 300) {
+                throw new IOException("Request to url " + url + "failed with status " + status.getStatusCode());
+            }
+            BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
+
+            StringBuffer result = new StringBuffer();
+            String line = "";
+            while ((line = rd.readLine()) != null) {
+                result.append(line);
+            }
+
+            JSONObject o = new JSONObject(result.toString());
+            //{song_id: Int, spotify_id: String, user_id: Int, user_alias: String}
+            int songID = o.getInt("song_id");
+            String spotifyID = o.getString("spotify_id");
+            int userID = o.getInt("user_id");
+            String userAlias = o.getString("user_alias");
+            Song song = new Song();
+            song.song_id = songID + "";
+            song.queuedBy = userAlias;
+            song.spotify_id = spotifyID;
+            MusicPlayer.getInstance().play(song);
+        }
+        catch (IOException e) {
+            Log.e("MakeRequest: getNowPlaying", e.toString());
+        }
+        catch (JSONException e) {
+            Log.e("MakeRequest: getNowPlaying", e.toString());
+        }
+    }
+    public static void endParty(final PartyScreen context){
+        HttpClient client = new DefaultHttpClient();
+        int pid = context.partyId;
+        String url = "http://soniqueue.com/party/"+pid+"/end";
+        HttpPost request = new HttpPost(url);
+        HttpResponse response;
+        try {
+            response = client.execute(request);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
     }
 }
