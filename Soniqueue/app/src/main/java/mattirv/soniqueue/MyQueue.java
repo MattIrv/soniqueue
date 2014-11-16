@@ -47,7 +47,9 @@ public class MyQueue extends Activity {
         //TODO: MJK6ZT: nth needs to be changed to actual queue position
 
         TextView queuePositionText = (TextView) findViewById(R.id.textview_party_info);
-        queuePositionText.setText("nth in "+partyName);
+        int pos = 0;
+        
+        queuePositionText.setText("You are at spot " + pos + " in "+partyName);
 
         //TODO: MJK6ZT: how can we put something more complicated than strings into the list view?
 
