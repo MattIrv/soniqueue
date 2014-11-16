@@ -70,7 +70,7 @@ public class MakeRequest {
                 String songName = track.getString("name");
                 song.songName = songName;
                 String songID = track.getString("id");
-                song.song_id = songID;
+                song.spotify_id = songID;
                 song.queuedBy = userName;
                 songs.add(song);
             }
