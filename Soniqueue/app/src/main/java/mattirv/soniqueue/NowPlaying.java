@@ -20,6 +20,8 @@ public class NowPlaying extends Activity {
     String partyName, email;
     int partyId;
 
+    final NowPlaying context = this;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,18 +36,12 @@ public class NowPlaying extends Activity {
         TextView partyNameText = (TextView) findViewById(R.id.textview_party_name);
         partyNameText.setText("Now Playing in " + partyName);
 
-        ListView listview = (ListView) findViewById(R.id.listView);
-        ArrayList<Song> songList = new ArrayList<Song>();
-        //TODO: Don't use mock data
-        Song song1 = new Song("", "Everytime We Touch", "Cascada", "Some Cascada Album", "mjk6zt");
-        Song song2 = new Song("", "Crash Into Me", "Dave Matthews Band", "Crash", "mji7wb");
-        Song song3 = new Song("", "Lips of an Angel", "Hinder", "idk", "mjk6zt");
-        songList.add(song1);
-        songList.add(song2);
-        songList.add(song3);
-        SongViewAdapter adapter = new SongViewAdapter(this, songList, true);
-        listview.setAdapter(adapter);
-        adapter.notifyDataSetChanged();
+        Thread thread = new Thread(new Runnable() {
+            public void run() {
+                MakeRequest.getPartyQueue(context);
+            }
+        });
+        thread.start();
     }
 
 
