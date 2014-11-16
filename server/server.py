@@ -19,7 +19,7 @@ class EndPartyHandler(tornado.web.RequestHandler):
 class NextSongHandler(tornado.web.RequestHandler):
     def post(self, party_id):
         p_id = int(party_id)
-        self.write(util.next(p_id))
+        self.write(util.next_song(p_id))
 
 class NowPlayingHandler(tornado.web.RequestHandler):
     def post(self, party_id):

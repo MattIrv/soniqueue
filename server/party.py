@@ -35,13 +35,19 @@ class Party(object):
 		user.set_party(None)
 
 	def end(self):
-		pass
+		for user in self.users:
+			user.party = None
+		self.queue = queues.PartyQueue()
+		Party.party_map.pop(self.party_id)
 
 	def next_song(self):
 		user = self.queue.pop()
+		if not user:
+			return None
 		song = user.queue.pop()
 		self.queue.add_user(user)
 		now_playing = song
+		return now_playing
 
 	def abrev_json(self):
 		return json.dumps(self.get_dict())

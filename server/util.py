@@ -22,10 +22,13 @@ def end(p_id):
     except Exception as e:
         return json.dumps({'err': str(e)})
 
-def next(p_id):
+def next_song(p_id):
     try:
         next_song = party_map[p_id].next_song()
-        return next_song.abrev_json()
+        if not next_song:
+            return json.dumps({})
+        else:
+            return next_song.abrev_json()
     except Exception as e:
         return json.dumps({'err': str(e)})
 
@@ -75,7 +78,8 @@ def add(u_id, spotify_id):
         new_song = Song(spotify_id, user)
         user.queue.add_song(new_song)
         party = user.party
-        party.queue.add_user(user)
+        if party:
+            party.queue.add_user(user)
         return json.dumps({'song_id': new_song.song_id})
     except Exception as e:
         return json.dumps({'err': str(e)})
@@ -144,3 +148,64 @@ def set_location(u_id, location):
         return cur_user.abrev_json()
     except Exception as e:
         return json.dumps({'err': str(e)})
+
+def main():
+    print login('zam4ke@virginia.edu', 'mars')
+    print login('ME@virginia.edu', 'mars')
+    print create_party(0, 'cool party', 'earth')
+    print join(0, 0)
+    print list_parties()
+    print user_info(0)
+    print add(0, 'COOLSONGBRO')
+    print list_user_queue(0)
+    print list_party_queue(0)
+    print add(0, 'SECONDSONG')
+    print list_user_queue(0)
+    print list_party_queue(0)
+    print clear(0)
+    print list_party_queue(0)
+    print leave(0, 0)
+    print add(0, 'THIRDSONG')
+    print list_party_queue(0)
+    print join(0, 0)
+    print list_party_queue(0)
+    print add(0, 'THIRDSONG')
+    print list_party_queue(0)
+    print remove(0, 3)
+    print list_party_queue(0)
+    print remove(0, 3)
+    print remove(0, 2)
+    print list_party_queue(0)
+    print join(0, 1)
+    print add(1, 'MYCOOLSONG')
+    print list_party_queue(0)
+    print add(0, 'MYCOOLSONG')
+    print list_party_queue(0)
+    print next_song(0)
+    print list_party_queue(0)
+    print next_song(0)
+    print list_party_queue(0)
+    print next_song(0)
+    print now_playing(0)
+    print next_song(0)
+    print add(1, 'Song1')
+    print add(1, 'Song2')
+    print add(1, 'Song3')
+    print add(1, 'Song4')
+    print list_party_queue(0)
+    print move(1, 8, 25)
+    print list_party_queue(0)
+    print set_alias(1, 'MEEEEE')
+    print set_location(1, 'MOON')
+    print leave(0, 1)
+    print list_party_queue(0)
+    print join(0, 1)
+    print list_party_queue(0)
+    print list_parties()
+    print end(0)
+    print user_info(1)
+    print user_info(0)
+    print list_parties()
+
+if __name__ == '__main__':
+    main()

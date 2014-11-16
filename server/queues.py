@@ -12,12 +12,12 @@ class UserQueue(object):
 	def clear(self):
 		self.queue = []
 	def top(self): #only shows what top song is, does not remove it
-		if self.queue:
+		if self and self.queue:
 			return self.queue[0]
 		else:
 			return None
 	def pop(self): #only removes top song, does not show what top song is
-		if self.queue:
+		if self and self.queue:
 			return self.queue.pop(0)
 		else:
 			return None
