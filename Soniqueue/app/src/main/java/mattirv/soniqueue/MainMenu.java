@@ -5,7 +5,9 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -13,29 +15,42 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.spotify.sdk.android.Spotify;
+import com.spotify.sdk.android.authentication.AuthenticationResponse;
+import com.spotify.sdk.android.authentication.SpotifyAuthentication;
+import com.spotify.sdk.android.playback.ConnectionStateCallback;
+import com.spotify.sdk.android.playback.Player;
+import com.spotify.sdk.android.playback.PlayerNotificationCallback;
+import com.spotify.sdk.android.playback.PlayerState;
 
-public class MainMenu extends Activity {
 
-    String email = null;
-    String displayname = null;
+public class MainMenu extends Activity implements
+        PlayerNotificationCallback, ConnectionStateCallback {
+
+    static String email = null;
+    static String displayname = null;
+    static Player player = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d("onCreate", "I just got created");
         setContentView(R.layout.activity_main_menu);
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             // Unsafe
-            email = (String)extras.get("EMAIL");
-            displayname = email.split("@")[0];
-            TextView emailText = (TextView) findViewById(R.id.text_loggedin);
-            emailText.setText("Logged in as: " + displayname);
+            if (extras.containsKey("EMAIL")) {
+                email = (String)extras.get("EMAIL");
+                displayname = email.split("@")[0];
+                TextView emailText = (TextView) findViewById(R.id.text_loggedin);
+                emailText.setText("Logged in as: " + displayname);
+            }
         }
         Button startParty = (Button) findViewById(R.id.btn_start_party);
         startParty.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startParty();
+                loginToSpotify();
             }
         });
         Button joinParty = (Button) findViewById(R.id.btn_join_party);
@@ -75,6 +90,19 @@ public class MainMenu extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
+    private static final String CLIENT_ID = "1196278c937a4daa8dc9d658d6d627fc";
+    private static final String REDIRECT_URI = "soniqueue-redirect://callback";
+
+    private Player mPlayer;
+
+    public void loginToSpotify() {
+        //SpotifyAuthentication.openAuthWindow(CLIENT_ID, "token", REDIRECT_URI + "?email=" + email,
+        //        new String[]{"streaming"}, null, this);
+        Log.d("loginToSpotify", "Logging into Spotify...");
+        SpotifyAuthentication.openAuthWindow(CLIENT_ID, "token", REDIRECT_URI,
+                new String[]{"streaming"}, null, this);
+    }
+
     public void startParty() {
         final EditText input = new EditText(this);
         input.setText(displayname + "'s Party");
@@ -108,5 +136,76 @@ public class MainMenu extends Activity {
         Intent intent = new Intent(getBaseContext(), PartyList.class);
         intent.putExtra("EMAIL", email);
         startActivity(intent);
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        Log.d("onNewIntent", "I MADE IT ACROSS THE OREGON TRAIL!!!!!!!");
+        Uri uri = intent.getData();
+        if (uri != null) {
+            AuthenticationResponse response = SpotifyAuthentication.parseOauthResponse(uri);
+            Spotify spotify = new Spotify(response.getAccessToken());
+            mPlayer = spotify.getPlayer(this, "Soniqueue", this, new Player.InitializationObserver() {
+                @Override
+                public void onInitialized() {
+                    mPlayer.addConnectionStateCallback(MainMenu.this);
+                    mPlayer.addPlayerNotificationCallback(MainMenu.this);
+                    player = mPlayer;
+                }
+
+                @Override
+                public void onError(Throwable throwable) {
+                    System.out.println("Could not initialize player: " + throwable.getMessage());
+                }
+            });
+            startParty();
+        }
+    }
+
+    @Override
+    public void onLoggedIn() {
+
+    }
+
+    @Override
+    public void onLoggedOut() {
+
+    }
+
+    @Override
+    public void onLoginFailed(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onTemporaryError() {
+
+    }
+
+    @Override
+    public void onNewCredentials(String s) {
+
+    }
+
+    @Override
+    public void onConnectionMessage(String s) {
+
+    }
+
+    @Override
+    public void onPlaybackEvent(EventType eventType, PlayerState playerState) {
+
+    }
+
+    @Override
+    public void onPlaybackError(ErrorType errorType, String s) {
+
+    }
+
+    @Override
+    public void onDestroy() {
+        Log.d("MainMenu", "I got destroyed.");
+        super.onDestroy();
     }
 }

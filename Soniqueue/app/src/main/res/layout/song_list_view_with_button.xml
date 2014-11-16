@@ -30,7 +30,10 @@
         android:layout_alignLeft="@+id/textview_artist_name_b"
         android:layout_alignStart="@+id/textview_artist_name_b"
         android:layout_alignParentLeft="false"
-        android:layout_marginLeft="0dp" />
+        android:layout_marginLeft="0dp"
+        android:singleLine="false"
+        android:layout_toLeftOf="@+id/btn_song_up"
+        android:layout_toStartOf="@+id/btn_song_up" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -41,7 +44,12 @@
         android:layout_below="@+id/textview_song_name_b"
         android:layout_toRightOf="@+id/imageview_album_art_b"
         android:layout_toEndOf="@+id/imageview_album_art_b"
-        android:layout_marginLeft="12dp" />
+        android:layout_marginLeft="12dp"
+        android:layout_toLeftOf="@+id/btn_song_up"
+        android:layout_toStartOf="@+id/btn_song_up"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:textColor="#FF424242" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -52,15 +60,57 @@
         android:layout_toEndOf="@+id/imageview_album_art_b"
         android:layout_toRightOf="@+id/imageview_album_art_b"
         android:layout_below="@+id/textview_artist_name_b"
-        android:layout_marginLeft="12dp" />
+        android:layout_marginLeft="12dp"
+        android:layout_toLeftOf="@+id/btn_song_del"
+        android:layout_toStartOf="@+id/btn_song_del"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:textColor="#ff424242" />
 
-    <ImageButton
+    <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/btn_song_image"
-        android:src="@drawable/common_signin_btn_icon_focus_dark"
-        android:layout_toEndOf="@+id/textview_album_name_b"
-        android:layout_alignBottom="@+id/imageview_album_art_b"
+        android:id="@+id/btn_song_up"
+        android:maxHeight="32dp"
+        android:maxWidth="32dp"
+        android:minHeight="32dp"
+        android:minWidth="32dp"
+        android:layout_alignTop="@+id/textview_song_name_b"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="false"
+        android:src="@drawable/uparrow" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btn_song_del"
+        android:maxHeight="32dp"
+        android:maxWidth="32dp"
+        android:minHeight="32dp"
+        android:minWidth="32dp"
+        android:layout_above="@+id/btn_song_down"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@+id/btn_song_up"
+        android:cropToPadding="false"
+        android:adjustViewBounds="false"
+        android:layout_marginTop="2dp"
+        android:layout_marginBottom="2dp"
+        android:layout_alignLeft="@+id/btn_song_up"
+        android:src="@drawable/remove" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btn_song_down"
+        android:maxHeight="32dp"
+        android:maxWidth="32dp"
+        android:minHeight="32dp"
+        android:minWidth="32dp"
+        android:layout_alignBottom="@+id/imageview_album_art_b"
+        android:layout_alignLeft="@+id/btn_song_del"
+        android:layout_alignStart="@+id/btn_song_del"
+        android:layout_alignParentRight="true"
+        android:src="@drawable/downarrow" />
+
 </RelativeLayout>

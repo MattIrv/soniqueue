@@ -30,7 +30,7 @@ public class SongViewButtonAdapter extends ArrayAdapter<Song> {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         final Song song = objects.get(position);
         LayoutInflater inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -44,8 +44,8 @@ public class SongViewButtonAdapter extends ArrayAdapter<Song> {
         TextView albumNameView = (TextView) rowView.findViewById(R.id.textview_album_name_b);
         albumNameView.setText(song.album);
 
-        ImageButton btn = (ImageButton) rowView.findViewById(R.id.btn_song_image);
-        btn.setOnClickListener(new View.OnClickListener(){
+        ImageView btnDel = (ImageView) rowView.findViewById(R.id.btn_song_del);
+        btnDel.setOnClickListener(new View.OnClickListener(){
 
             @Override
             public void onClick(View view) {
@@ -67,6 +67,32 @@ public class SongViewButtonAdapter extends ArrayAdapter<Song> {
                     }
                 });
                 d.show();
+            }
+        });
+
+        ImageView btnUp = (ImageView) rowView.findViewById(R.id.btn_song_up);
+        btnUp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (position != 0) {
+                    //TODO: Make API call to move up
+                    objects.remove(song);
+                    objects.add(position-1, song);
+                    notifyDataSetChanged();
+                }
+            }
+        });
+
+        ImageView btnDown = (ImageView) rowView.findViewById(R.id.btn_song_down);
+        btnDown.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (position != objects.size()-1) {
+                    //TODO: Make API call to move up
+                    objects.remove(song);
+                    objects.add(position+1, song);
+                    notifyDataSetChanged();
+                }
             }
         });
 

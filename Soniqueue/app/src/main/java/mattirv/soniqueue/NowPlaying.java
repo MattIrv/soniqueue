@@ -39,7 +39,7 @@ public class NowPlaying extends Activity {
         songList.add(song1);
         songList.add(song2);
         songList.add(song3);
-        SongViewAdapter adapter = new SongViewAdapter(this, songList);
+        SongViewAdapter adapter = new SongViewAdapter(this, songList, true);
         listview.setAdapter(adapter);
         adapter.notifyDataSetChanged();
     }

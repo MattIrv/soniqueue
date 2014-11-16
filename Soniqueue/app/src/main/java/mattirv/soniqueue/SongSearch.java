@@ -1,12 +1,18 @@
 package mattirv.soniqueue;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import java.io.IOException;
+import java.util.List;
 
 import java.util.ArrayList;
 
@@ -17,6 +23,8 @@ public class SongSearch extends Activity {
     int partyId;
     String partyName;
     String email;
+
+    final SongSearch context = this;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,20 +39,15 @@ public class SongSearch extends Activity {
             email = (String) extras.get("EMAIL");
         }
 
+        Thread thread = new Thread(new Runnable() {
+            public void run() {
+                MakeRequest.makeSearch(context, searchterm, email.split("@")[0]);
+            }
+        });
+        thread.start();
+
         TextView searchText = (TextView) findViewById(R.id.textview_search_term);
-        searchText.setText("Showing results for " + searchterm);
-
-        //TODO: MJK6ZT: how can we put something more complicated than strings into the list view?
-
-        ListView listview = (ListView) findViewById(R.id.listView);
-        ArrayList<String> myStringArray1 = new ArrayList<String>();
-        myStringArray1.add("First result");
-        myStringArray1.add("Second result");
-
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, myStringArray1);
-        listview.setAdapter(adapter);
-        adapter.notifyDataSetChanged();
-
+        searchText.setText("Loading results for " + searchterm + "...");
 
     }
 
@@ -66,5 +69,25 @@ public class SongSearch extends Activity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void updateSongs(List<Song> songs) {
+        TextView searchText = (TextView) findViewById(R.id.textview_search_term);
+        searchText.setText("Showing results for " + searchterm);
+        ListView listview = (ListView) findViewById(R.id.listView);
+        SongViewAdapter adapter = new SongViewAdapter(this, songs, false);
+        listview.setAdapter(adapter);
+        listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int index, long id) {
+                //TODO: API call to add to queue
+                Intent intent = new Intent(getBaseContext(), MyQueue.class);
+                intent.putExtra("EMAIL", email);
+                intent.putExtra("PARTY_NAME", partyName);
+                intent.putExtra("PARTY_ID", partyId);
+                startActivity(intent);
+            }
+        });
+        adapter.notifyDataSetChanged();
     }
 }

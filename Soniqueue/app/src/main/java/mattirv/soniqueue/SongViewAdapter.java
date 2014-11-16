@@ -17,11 +17,13 @@ public class SongViewAdapter extends ArrayAdapter<Song> {
 
     private final Context context;
     private final List<Song> objects;
+    private final boolean showQueuedBy;
 
-    public SongViewAdapter(Context context, List<Song> objects) {
+    public SongViewAdapter(Context context, List<Song> objects, boolean showQueuedBy) {
         super(context, R.layout.song_list_view, objects);
         this.context = context;
         this.objects = objects;
+        this.showQueuedBy = showQueuedBy;
     }
 
     @Override
@@ -31,7 +33,9 @@ public class SongViewAdapter extends ArrayAdapter<Song> {
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View rowView = inflater.inflate(R.layout.song_list_view, parent, false);
         ImageView albumArtView = (ImageView) rowView.findViewById(R.id.imageview_album_art);
-        //TODO: Retrieve the album art from the interwebs.
+        if (song.image != null) {
+            albumArtView.setImageBitmap(song.image);
+        }
         TextView songNameView = (TextView) rowView.findViewById(R.id.textview_song_name);
         songNameView.setText(song.songName);
         TextView artistNameView = (TextView) rowView.findViewById(R.id.textview_artist_name);
@@ -39,7 +43,10 @@ public class SongViewAdapter extends ArrayAdapter<Song> {
         TextView albumNameView = (TextView) rowView.findViewById(R.id.textview_album_name);
         albumNameView.setText(song.album);
         TextView queuedByView = (TextView) rowView.findViewById(R.id.textview_queued_by);
-        queuedByView.setText("Queued by: " + song.queuedBy);
+        if (showQueuedBy)
+            queuedByView.setText("Queued by: " + song.queuedBy);
+        else
+            queuedByView.setText("");
         return rowView;
     }
 }
