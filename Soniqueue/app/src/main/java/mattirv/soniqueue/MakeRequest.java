@@ -620,4 +620,16 @@ public class MakeRequest {
             e.printStackTrace();
         }
     }
+
+    public static void clearQueue(int user_id){
+        HttpClient client = new DefaultHttpClient();
+        String url = "http://soniqueue.com/user/" + user_id + "/clear";
+        HttpPost request = new HttpPost(url);
+        HttpResponse response;
+        try {
+            response = client.execute(request);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+    }
 }

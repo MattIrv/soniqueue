@@ -48,6 +48,37 @@ public class MyQueue extends Activity {
             }
         });
 
+        Button clearqueue = (Button) findViewById(R.id.button_clear_queue);
+        clearqueue.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                AlertDialog.Builder d = new AlertDialog.Builder(context);
+                TextView text = new TextView(context);
+                text.setText("Are you sure you want to clear your queue?");
+                d.setTitle("Confirm clear");
+                d.setView(text);
+                d.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        Thread thread = new Thread(new Runnable() {
+                            public void run() {
+                                MakeRequest.clearQueue(MyUser.userId);
+                            }
+                        });
+                        thread.start();
+                        updateSongs(new ArrayList<Song>());
+                    }
+                });
+                d.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        // Canceled. No need to do anything.
+                    }
+                });
+                d.show();
+
+            }
+        });
+
         Thread thread = new Thread(new Runnable() {
             public void run() {
                 MakeRequest.getUserPosition(context, partyId, MyUser.userId);

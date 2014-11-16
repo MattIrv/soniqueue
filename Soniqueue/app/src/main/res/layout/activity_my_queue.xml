@@ -42,9 +42,10 @@
         android:layout_height="wrap_content"
         android:text="Add Song"
         android:id="@+id/button_add_song"
+        android:layout_marginBottom="26dp"
         android:layout_above="@+id/textview_party_info"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="20dp" />
+        android:layout_toLeftOf="@+id/textView"
+        android:layout_toStartOf="@+id/textView" />
 
     <ListView
         android:layout_width="wrap_content"
@@ -55,5 +56,14 @@
         android:layout_marginTop="28dp"
         android:layout_above="@+id/button_add_song"
         android:layout_marginBottom="20dp" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Clear Queue"
+        android:id="@+id/button_clear_queue"
+        android:layout_alignBottom="@+id/button_add_song"
+        android:layout_toRightOf="@+id/textView"
+        android:layout_toEndOf="@+id/textView" />
 
 </RelativeLayout>
