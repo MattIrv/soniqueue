@@ -124,7 +124,10 @@ public class MyQueue extends Activity {
 
     public void updateUserPosition(int user_pos) {
         TextView queuePositionText = (TextView) findViewById(R.id.textview_party_info);
-        queuePositionText.setText("You are at spot " + (user_pos + 1) + " in " + partyName);
+        if(user_pos != -1)
+            queuePositionText.setText("You are at spot " + (user_pos + 1) + " in " + partyName);
+        else
+            queuePositionText.setText("You aren't in the queue yet in " + partyName);
 
     }
 }

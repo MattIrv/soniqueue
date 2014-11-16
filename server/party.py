@@ -44,7 +44,10 @@ class Party(object):
 			self.queue.remove(user)
 
 	def get_user_position(self, user):
-		return (self.queue.index(user))
+		if user in self.queue:
+			return (self.queue.index(user))
+		else:
+			return -1
 
 	def end(self):
 		for user in self.users:
