@@ -59,8 +59,8 @@ class Party(object):
 				return None
 			song = user.queue.pop(0)
 			self.add_user(user)
-			now_playing = song
-			return now_playing
+			self.now_playing = song
+			return song
 
 	def abrev_json(self):
 		return json.dumps(self.get_dict())
