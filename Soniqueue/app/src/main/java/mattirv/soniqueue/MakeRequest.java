@@ -169,4 +169,8 @@ public class MakeRequest {
 
     public static void getPartyQueue(final )
     public static void getUserQueue(final )
+
+    public static void getUserPosition(final MyQueue context, int party_id, int user_id){
+
+    }
 }
