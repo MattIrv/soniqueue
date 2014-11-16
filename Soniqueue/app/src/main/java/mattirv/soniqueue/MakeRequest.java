@@ -262,6 +262,8 @@ public class MakeRequest {
         }
     }
 
+
+
     public static void playNextSong(final MusicPlayer context, int partyID) {
         HttpClient client = new DefaultHttpClient();
         String url = "http://soniqueue.com/party/" + partyID + "/next";
@@ -300,4 +302,21 @@ public class MakeRequest {
             Log.e("MakeRequest: getNowPlaying", e.toString());
         }
     }
+<<<<<<< HEAD
 }
+=======
+
+    public static void endParty(final PartyScreen context){
+        HttpClient client = new DefaultHttpClient();
+        int pid = context.partyId;
+        String url = "http://soniqueue.com/party/"+pid+"/end";
+        HttpPost request = new HttpPost(url);
+        HttpResponse response;
+        try {
+            response = client.execute(request);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+}
+>>>>>>> 499a0733b50de95ff89ea15f4f3f949018bbd21d
