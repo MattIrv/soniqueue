@@ -56,8 +56,6 @@ public class MyQueue extends Activity {
         });
         thread.start();
 
-        //TODO: MJK : needs to actually use a uID
-
         Thread thread2 = new Thread(new Runnable() {
             public void run() {
                 MakeRequest.getUserQueue(context, MyUser.userId);

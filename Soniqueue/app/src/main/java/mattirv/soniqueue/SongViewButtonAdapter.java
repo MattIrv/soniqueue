@@ -57,6 +57,14 @@ public class SongViewButtonAdapter extends ArrayAdapter<Song> {
                 d.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
                         //TODO: Make API call to remove
+
+                        Thread thread = new Thread(new Runnable() {
+                            public void run() {
+                                MakeRequest.removeSongFromQueue(MyUser.userId+"", song.song_id);
+                            }
+                        });
+                        thread.start();
+
                         objects.remove(song);
                         notifyDataSetChanged();
                     }

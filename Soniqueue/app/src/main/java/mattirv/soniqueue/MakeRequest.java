@@ -455,4 +455,16 @@ public class MakeRequest {
             e.printStackTrace();
         }
     }
+
+    public static void removeSongFromQueue(String uid, String sID){
+        HttpClient client = new DefaultHttpClient();
+        String url = "http://soniqueue.com/user/"+uid+"/remove/"+sID;
+        HttpPost request = new HttpPost(url);
+        HttpResponse response;
+        try {
+            response = client.execute(request);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+    }
 }
