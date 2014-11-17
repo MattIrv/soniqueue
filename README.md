@@ -10,4 +10,4 @@ Have you ever been to a party and been stuck listening to whatever pandora stati
 ## Details
 This repository includes a central server in the 'server' directory and an Android app in the 'Soniqueue' directory. The Android app can be opened directly as an Android Studio project. Various URLs in the Android app are hardcoded to connect to http://soniqueue.com, which is the address of our server. If running your own server, these will have to be changed.
 
-Created for Hacck 2014
+*2nd Place Winner, Hacck 2014*
