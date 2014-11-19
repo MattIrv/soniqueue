@@ -85,6 +85,7 @@ public class PartyList extends Activity {
                 intent.putExtra("PARTY_ID", partiesFinal.get(index).partyId);
                 intent.putExtra("IS_LEADER", false);
                 startActivity(intent);
+                finish();
             }
         });
         adapter.notifyDataSetChanged();

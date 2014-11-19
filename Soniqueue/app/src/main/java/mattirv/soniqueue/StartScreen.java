@@ -85,6 +85,7 @@ public class StartScreen extends Activity {
                 Intent intent = new Intent(getBaseContext(), MainMenu.class);
                 intent.putExtra("EMAIL", email);
                 startActivity(intent);
+                finish();
             } else if (resultCode == RESULT_CANCELED) {
                 // The account picker dialog closed without selecting an account.
                 // Notify users that they must pick an account to proceed.

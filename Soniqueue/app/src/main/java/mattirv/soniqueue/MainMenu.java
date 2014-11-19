@@ -66,6 +66,7 @@ public class MainMenu extends Activity implements
             public void onClick(View view) {
                 Intent intent = new Intent(getBaseContext(), StartScreen.class);
                 startActivity(intent);
+                finish();
             }
         });
     }

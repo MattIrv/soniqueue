@@ -97,6 +97,17 @@ public class MyQueue extends Activity {
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Thread thread = new Thread(new Runnable() {
+            public void run() {
+                MakeRequest.getUserQueue(context, MyUser.userId);
+            }
+        });
+        thread.start();
+    }
+
     public void search() {
         final EditText input = new EditText(this);
         input.setText("");

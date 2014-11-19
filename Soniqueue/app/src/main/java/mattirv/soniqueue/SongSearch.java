@@ -92,11 +92,12 @@ public class SongSearch extends Activity {
                     }
                 });
                 thread.start();
-                Intent intent = new Intent(getBaseContext(), MyQueue.class);
-                intent.putExtra("EMAIL", email);
-                intent.putExtra("PARTY_NAME", partyName);
-                intent.putExtra("PARTY_ID", partyId);
-                startActivity(intent);
+//                Intent intent = new Intent(getBaseContext(), MyQueue.class);
+//                intent.putExtra("EMAIL", email);
+//                intent.putExtra("PARTY_NAME", partyName);
+//                intent.putExtra("PARTY_ID", partyId);
+//                startActivity(intent);
+                finish();
             }
         });
         adapter.notifyDataSetChanged();
